@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="de">
+<head>
+{% include '_head.html' %}
+<title>{{ APP_NAME }} – Training planen. Team führen. Fortschritt sehen.</title>
+<link rel="stylesheet" href="/static/css/landing.css?v={{ APP_VERSION }}">
+</head>
+<body class="landing">
+{% include '_icons.html' %}
+<script type="application/json" id="app-config">{{ FRONTEND_CONFIG|tojson }}</script>
+<div class="ambient" aria-hidden="true"></div>
+
+<header class="l-nav glass" id="lNav">
+  <a class="l-brand" href="/"><img src="/static/icons/logo.svg" alt="">{{ APP_NAME }}</a>
+  <nav class="l-links" aria-label="Seitennavigation">
+    <a href="#funktionen">Funktionen</a>
+    <a href="#rollen">Für wen</a>
+    <a href="#installieren">Installieren</a>
+  </nav>
+  <a class="btn btn-primary btn-sm" href="/login">Anmelden</a>
+</header>
+
+<main>
+  <!-- Hero -->
+  <section class="l-hero">
+    <div class="l-hero-text reveal">
+      <img class="l-hero-logo" src="/static/icons/logo.svg" alt="">
+      <h1>Training planen.<br><span class="grad">Team führen.</span><br>Fortschritt sehen.</h1>
+      <p class="l-lead">{{ APP_NAME }} ist deine Trainings-App für Fußball, Tennis, Basketball, Volleyball, Floorball, Gym und mehr – für Trainer, Spieler und alle, die für sich selbst trainieren.</p>
+      <div class="l-cta">
+        <a class="btn btn-primary l-btn-lg" href="/login?mode=register">Kostenlos starten</a>
+        <a class="btn btn-glass l-btn-lg" href="#installieren"><svg class="i sm"><use href="#i-download"/></svg>Als App installieren</a>
+      </div>
+      <p class="l-note">Kostenlos · Keine Werbung · Kein Tracking</p>
+    </div>
+    <div class="l-hero-phone reveal" id="heroPhone">
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="pm-status"><span>9:41</span><span class="pm-notch"></span><span>100%</span></div>
+          <div class="pm-title">Übersicht</div>
+          <div class="pm-sub">Guten Morgen, Alex · Montag</div>
+          <div class="pm-card pm-today">
+            <span class="pm-art" style="--c:var(--s-fussball)"><svg class="i" viewBox="0 0 24 24"><use href="#s-fussball"/></svg></span>
+            <span><small>Als Nächstes · 18:00 Uhr</small><b>Passspiel &amp; Abschluss</b><em>Fußball</em></span>
+          </div>
+          <div class="pm-card">
+            <div class="pm-row"><b>Diese Woche</b><span><b>3</b> von 4</span></div>
+            <div class="pm-bar"><i style="width:75%"></i></div>
+            <div class="pm-days"><span>Mo</span><span>Di</span><span class="on">Mi</span><span>Do</span><span>Fr</span><span>Sa</span><span>So</span></div>
+          </div>
+          <div class="pm-list">
+            <div><span class="pm-ic" style="--c:#2f6bff"><svg class="i"><use href="#i-clipboard"/></svg></span>Trainings<em>12</em></div>
+            <div><span class="pm-ic" style="--c:#26b55a"><svg class="i"><use href="#i-cones"/></svg></span>Übungen<em>46</em></div>
+            <div><span class="pm-ic" style="--c:#af52de"><svg class="i"><use href="#i-users"/></svg></span>Mein Team<em>18</em></div>
+          </div>
+          <div class="pm-dock">
+            <span class="pm-tabs"><i class="on"></i><i></i><i></i><i></i><i></i></span><span class="pm-fab">+</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Funktionen -->
+  <section class="l-section" id="funktionen">
+    <div class="l-head reveal">
+      <p class="l-eyebrow">Funktionen</p>
+      <h2>Alles, was ein Training braucht.</h2>
+      <p class="l-lead">Von der Übungsidee bis zur Anwesenheit – an einem Ort, auf jedem Gerät.</p>
+    </div>
+
+    <div class="l-feature reveal">
+      <div class="l-feature-text">
+        <span class="l-badge" style="--c:var(--s-fussball)"><svg class="i"><use href="#i-cones"/></svg></span>
+        <h3>46 Übungen. 7 Sportarten.</h3>
+        <p>Eine fertige Übungsdatenbank mit Filtern nach Sportart, Kernkompetenz, Schwierigkeit und Spielerzahl. Eigene Übungen mit Foto anlegen, favorisieren und per Link mit anderen Trainern teilen.</p>
+      </div>
+      <div class="l-feature-visual">
+        <div class="l-sports">
+          {% for s, k in [('Fußball','fussball'),('Tennis','tennis'),('Floorball','floorball'),('Basketball','basketball'),('Volleyball','volleyball'),('Gym','gym'),('Allgemein','allgemein')] %}
+          <div class="l-sport" style="--c:var(--s-{{ k }}); --d:{{ loop.index0 }}"><svg class="i" viewBox="0 0 24 24"><use href="#s-{{ k }}"/></svg><span>{{ s }}</span></div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <div class="l-feature reverse reveal">
+      <div class="l-feature-text">
+        <span class="l-badge" style="--c:#2f6bff"><svg class="i"><use href="#i-layers"/></svg></span>
+        <h3>Trainings mit Struktur.</h3>
+        <p>Übungen in Aufwärmen, Hauptteil und Abschluss ordnen, Dauer festlegen und per Drag &amp; Drop umsortieren. Mit einem Tipp wiederholen, als PDF drucken oder im Kalender planen.</p>
+      </div>
+      <div class="l-feature-visual">
+        <div class="l-blocks">
+          <div class="l-block"><b>1</b><span>Aufwärmen</span><em>15 Min.</em></div>
+          <div class="l-block"><b>2</b><span>Hauptteil</span><em>45 Min.</em></div>
+          <div class="l-block"><b>3</b><span>Abschluss</span><em>10 Min.</em></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="l-feature reveal">
+      <div class="l-feature-text">
+        <span class="l-badge" style="--c:var(--accent)"><svg class="i"><use href="#i-play"/></svg></span>
+        <h3>Live-Modus auf dem Platz.</h3>
+        <p>Training starten und Schritt für Schritt durchgehen: große Übungsansicht, Countdown für jede Übung oder Stoppuhr, Pause und Weiter – das Handy bleibt dabei wach.</p>
+      </div>
+      <div class="l-feature-visual">
+        <div class="l-timer" aria-hidden="true">
+          <svg viewBox="0 0 200 200"><circle cx="100" cy="100" r="86" class="lt-bg"/><circle cx="100" cy="100" r="86" class="lt-fg"/></svg>
+          <div class="lt-text"><small>Countdown</small><b id="demoTimer">09:58</b><span>Rondo 4 gegen 2</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="l-feature reverse reveal">
+      <div class="l-feature-text">
+        <span class="l-badge" style="--c:#af52de"><svg class="i"><use href="#i-users"/></svg></span>
+        <h3>Dein Team im Blick.</h3>
+        <p>Kader mit Positionen, Trikotnummern und Status, Einladecodes für deine Spieler, Anwesenheit mit einem Tipp und eine Übersicht, wer wie oft dabei war. Termine für Spiele und Turniere inklusive.</p>
+      </div>
+      <div class="l-feature-visual">
+        <div class="l-players">
+          <div class="l-player"><span class="avatar">LB</span><span><b>Lena B.</b><em>Torwart · #1</em></span><i class="ok">Anwesend</i></div>
+          <div class="l-player"><span class="avatar">JH</span><span><b>Jonas H.</b><em>Verteidiger · #4</em></span><i class="ok">Anwesend</i></div>
+          <div class="l-player"><span class="avatar">MW</span><span><b>Mia W.</b><em>Mittelfeld · #8</em></span><i class="no">Fehlt</i></div>
+          <div class="l-att"><span>Anwesenheit</span><b>87 %</b></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Rollen -->
+  <section class="l-section" id="rollen">
+    <div class="l-head reveal">
+      <p class="l-eyebrow">Für wen</p>
+      <h2>Eine App. Drei Rollen.</h2>
+    </div>
+    <div class="l-roles">
+      <article class="l-role reveal" style="--c:var(--accent)">
+        <span class="l-badge"><svg class="i"><use href="#i-whistle"/></svg></span>
+        <h3>Trainer</h3>
+        <p>Trainings, Kalender mit Terminen, Teams, Spieler, Anwesenheit und Einladecodes.</p>
+      </article>
+      <article class="l-role reveal" style="--c:#2f6bff">
+        <span class="l-badge"><svg class="i"><use href="#i-user"/></svg></span>
+        <h3>Spieler</h3>
+        <p>Mit dem Code deines Trainers siehst du seine Trainings und Termine und meldest dich an oder ab.</p>
+      </article>
+      <article class="l-role reveal" style="--c:#26b55a">
+        <span class="l-badge"><svg class="i"><use href="#i-target"/></svg></span>
+        <h3>Privat</h3>
+        <p>Plane dein eigenes Training mit Wochenziel und Statistik – ganz ohne Team.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- Datenschutz -->
+  <section class="l-section l-privacy reveal">
+    <span class="l-badge big" style="--c:#26b55a"><svg class="i"><use href="#i-shield"/></svg></span>
+    <h2>Deine Daten bleiben deine Daten.</h2>
+    <p class="l-lead">Kein Tracking, keine Werbung, keine fremden Server im Browser. Passwörter werden nur verschlüsselt gespeichert. Du kannst deine Daten jederzeit exportieren und dein Konto mit einem Klick vollständig löschen.</p>
+  </section>
+
+  <!-- Installieren -->
+  <section class="l-section" id="installieren">
+    <div class="l-head reveal">
+      <p class="l-eyebrow">Installieren</p>
+      <h2>In 30 Sekunden auf deinem Home-Bildschirm.</h2>
+      <p class="l-lead">Kein App Store nötig: {{ APP_NAME }} lässt sich direkt aus dem Browser installieren und startet danach wie eine echte App.</p>
+      <p class="l-detected" id="detected" hidden></p>
+    </div>
+
+    <div class="segmented l-os reveal" id="osTabs" role="tablist">
+      <button type="button" data-os="ios" role="tab"><svg class="i sm"><use href="#i-phone"/></svg>iPhone &amp; iPad</button>
+      <button type="button" data-os="android" role="tab"><svg class="i sm"><use href="#i-android"/></svg>Android</button>
+      <button type="button" data-os="desktop" role="tab"><svg class="i sm"><use href="#i-monitor"/></svg>Computer</button>
+    </div>
+
+    <div class="l-install-now" id="installNow" hidden>
+      <button class="btn btn-primary l-btn-lg" type="button" id="installBtn"><svg class="i sm"><use href="#i-download"/></svg>Jetzt installieren</button>
+      <p class="l-note">Dein Browser unterstützt die Installation mit einem Klick.</p>
+    </div>
+
+    <!-- iOS -->
+    <div class="l-steps" data-steps="ios">
+      <div class="l-step reveal">
+        <div class="l-shot"><div class="mini-phone">
+          <div class="mp-url"><svg class="i"><use href="#i-lock"/></svg>{{ request.host }}</div>
+          <div class="mp-page"><img src="/static/icons/logo.svg" alt=""><b>{{ APP_NAME }}</b></div>
+          <div class="mp-bar"><svg class="i"><use href="#i-chev-left"/></svg><svg class="i"><use href="#i-chev-right"/></svg><span class="hl"><svg class="i"><use href="#i-share"/></svg></span><svg class="i"><use href="#i-more"/></svg></div>
+        </div></div>
+        <span class="l-num">1</span>
+        <h3>In Safari öffnen</h3>
+        <p>Öffne diese Seite in <b>Safari</b> und tippe unten auf <b>Teilen</b> <svg class="i sm inl"><use href="#i-share"/></svg>. Bei neueren iOS-Versionen erst auf <b>•••</b> und dann auf <b>Teilen</b>.</p>
+      </div>
+      <div class="l-step reveal">
+        <div class="l-shot"><div class="mini-phone sheet">
+          <div class="mp-sheet">
+            <div class="mp-sheet-row"><svg class="i"><use href="#i-copy"/></svg>Kopieren</div>
+            <div class="mp-sheet-row"><svg class="i"><use href="#i-star"/></svg>Zu Favoriten</div>
+            <div class="mp-sheet-row hl"><svg class="i"><use href="#i-add-square"/></svg>Zum Home-Bildschirm</div>
+            <div class="mp-sheet-row"><svg class="i"><use href="#i-printer"/></svg>Drucken</div>
+          </div>
+        </div></div>
+        <span class="l-num">2</span>
+        <h3>„Zum Home-Bildschirm“</h3>
+        <p>Scrolle im Menü nach unten und tippe auf <b>Zum Home-Bildschirm</b> <svg class="i sm inl"><use href="#i-add-square"/></svg>.</p>
+      </div>
+      <div class="l-step reveal">
+        <div class="l-shot"><div class="mini-phone">
+          <div class="mp-head"><span>Abbrechen</span><b>Zum Home-Bildschirm</b><span class="hl-text">Hinzufügen</span></div>
+          <div class="mp-add"><img src="/static/icons/icon-192.png" alt=""><span><b>{{ APP_NAME }}</b><em>{{ request.host[:14] }}…</em></span></div>
+        </div></div>
+        <span class="l-num">3</span>
+        <h3>Hinzufügen</h3>
+        <p>Tippe oben rechts auf <b>Hinzufügen</b>. Fertig – {{ APP_NAME }} liegt jetzt auf deinem Home-Bildschirm.</p>
+      </div>
+      <div class="l-step reveal">
+        <div class="l-shot"><div class="mini-phone home">
+          <div class="mp-grid"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><img src="/static/icons/icon-192.png" alt=""></div>
+        </div></div>
+        <span class="l-num">4</span>
+        <h3>Wie eine App starten</h3>
+        <p>Öffne {{ APP_NAME }} über das neue Symbol: im Vollbild, mit Benachrichtigungen (ab iOS 16.4) und Offline-Hinweis.</p>
+      </div>
+    </div>
+
+    <!-- Android -->
+    <div class="l-steps" data-steps="android" hidden>
+      <div class="l-step reveal">
+        <div class="l-shot"><div class="mini-phone">
+          <div class="mp-url android"><svg class="i"><use href="#i-lock"/></svg>{{ request.host[:22] }}…<span class="hl"><svg class="i"><use href="#i-dots-v"/></svg></span></div>
+          <div class="mp-page"><img src="/static/icons/logo.svg" alt=""><b>{{ APP_NAME }}</b></div>
+        </div></div>
+        <span class="l-num">1</span>
+        <h3>In Chrome öffnen</h3>
+        <p>Öffne diese Seite in <b>Chrome</b> und tippe oben rechts auf das Menü <svg class="i sm inl"><use href="#i-dots-v"/></svg>.</p>
+      </div>
+      <div class="l-step reveal">
+        <div class="l-shot"><div class="mini-phone">
+          <div class="mp-menu">
+            <div class="mp-sheet-row"><svg class="i"><use href="#i-plus"/></svg>Neuer Tab</div>
+            <div class="mp-sheet-row"><svg class="i"><use href="#i-history"/></svg>Verlauf</div>
+            <div class="mp-sheet-row hl"><svg class="i"><use href="#i-add-square"/></svg>App installieren</div>
+            <div class="mp-sheet-row"><svg class="i"><use href="#i-settings"/></svg>Einstellungen</div>
+          </div>
+        </div></div>
+        <span class="l-num">2</span>
+        <h3>„App installieren“</h3>
+        <p>Tippe auf <b>App installieren</b> – je nach Version heißt es auch <b>Zum Startbildschirm hinzufügen</b>.</p>
+      </div>
+      <div class="l-step reveal">
+        <div class="l-shot"><div class="mini-phone">
+          <div class="mp-dialog"><img src="/static/icons/icon-192.png" alt=""><b>App installieren?</b><em>{{ APP_NAME }}</em><span class="mp-actions"><span>Abbrechen</span><span class="hl-text">Installieren</span></span></div>
+        </div></div>
+        <span class="l-num">3</span>
+        <h3>Installieren bestätigen</h3>
+        <p>Bestätige mit <b>Installieren</b>. {{ APP_NAME }} erscheint auf dem Startbildschirm und in der App-Übersicht.</p>
+      </div>
+    </div>
+
+    <!-- Desktop -->
+    <div class="l-steps" data-steps="desktop" hidden>
+      <div class="l-step reveal">
+        <div class="l-shot"><div class="mini-desktop">
+          <div class="md-url"><svg class="i"><use href="#i-lock"/></svg>{{ request.host }}<span class="hl"><svg class="i"><use href="#i-monitor"/></svg></span></div>
+          <div class="mp-page"><img src="/static/icons/logo.svg" alt=""><b>{{ APP_NAME }}</b></div>
+        </div></div>
+        <span class="l-num">1</span>
+        <h3>Chrome oder Edge</h3>
+        <p>Klicke rechts in der Adressleiste auf das Installieren-Symbol <svg class="i sm inl"><use href="#i-monitor"/></svg> – oder im Menü auf <b>App installieren</b>.</p>
+      </div>
+      <div class="l-step reveal">
+        <div class="l-shot"><div class="mini-desktop">
+          <div class="mp-dialog"><img src="/static/icons/icon-192.png" alt=""><b>App installieren?</b><em>{{ APP_NAME }}</em><span class="mp-actions"><span>Abbrechen</span><span class="hl-text">Installieren</span></span></div>
+        </div></div>
+        <span class="l-num">2</span>
+        <h3>Bestätigen</h3>
+        <p>{{ APP_NAME }} öffnet sich danach in einem eigenen Fenster. Auf dem Mac in Safari: Menü <b>Ablage → Zum Dock hinzufügen</b>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Abschluss -->
+  <section class="l-section l-final reveal">
+    <img class="l-hero-logo" src="/static/icons/logo.svg" alt="">
+    <h2>Bereit fürs nächste Training?</h2>
+    <div class="l-cta center">
+      <a class="btn btn-primary l-btn-lg" href="/login?mode=register">Kostenlos starten</a>
+      <a class="btn btn-glass l-btn-lg" href="/login">Anmelden</a>
+    </div>
+  </section>
+</main>
+
+<footer class="l-foot">
+  <span><img src="/static/icons/logo.svg" alt="">{{ APP_NAME }}</span>
+  <nav><a href="/privacy">Datenschutz</a><a href="/imprint">Impressum</a><a href="/login">Anmelden</a></nav>
+  <span class="faint">Version {{ APP_VERSION }}</span>
+</footer>
+<div class="toast-host" id="toastHost" aria-live="polite"></div>
+<script src="/static/js/core.js?v={{ APP_VERSION }}"></script>
+<script src="/static/js/landing.js?v={{ APP_VERSION }}"></script>
+</body>
+</html>

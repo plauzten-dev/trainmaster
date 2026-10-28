@@ -1,8 +1,9 @@
 /* Service Worker – bei JEDEM Release CACHE_VERSION erhoehen (muss zu APP_VERSION passen). */
 'use strict';
-const CACHE_VERSION = 'v1.4.0';
+const CACHE_VERSION = 'v1.5.1';
 const CACHE = 'trainmaster-' + CACHE_VERSION;
 const V = '?v=' + CACHE_VERSION.slice(1);
+const DEV = /^(localhost|127\.|10\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.)/.test(self.location.hostname);
 const PRECACHE = [
   '/offline',
   '/static/css/app.css' + V, '/static/css/pages.css' + V,
@@ -29,6 +30,8 @@ self.addEventListener('fetch', (event) => {
   if (url.pathname.startsWith('/api/')) return;           // API nie cachen
   if (url.pathname.startsWith('/uploads/')) return;       // persoenliche Bilder nicht cachen
 
+  // Lokale Entwicklung (localhost / Heimnetz): immer frisch laden, damit Aenderungen sofort sichtbar sind
+  if (DEV) return;
   // Statische Dateien: Cache zuerst (versioniert ueber ?v=, Icons aendern sich kaum) -> schnelle Seitenwechsel
   if (url.pathname.startsWith('/static/')) {
     event.respondWith(caches.match(req).then((hit) => hit || fetch(req).then((res) => {

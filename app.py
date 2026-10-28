@@ -94,8 +94,11 @@ def security_headers(resp):
         resp.headers['Cache-Control'] = 'no-store'
     elif request.path.startswith('/static/') and resp.status_code == 200:
         # Versionierte Dateien (?v=APP_VERSION) aendern sich nie -> dauerhaft cachen
-        resp.headers['Cache-Control'] = ('public, max-age=31536000, immutable' if request.args.get('v')
-                                         else 'public, max-age=86400')
+        if app.config.get('DEV_MODE'):
+            resp.headers['Cache-Control'] = 'no-cache'  # lokal: Aenderungen sofort sichtbar
+        else:
+            resp.headers['Cache-Control'] = ('public, max-age=31536000, immutable' if request.args.get('v')
+                                             else 'public, max-age=86400')
     return resp
 
 
@@ -138,7 +141,10 @@ def inject_globals():
 
 @app.route('/')
 def index():
-    return redirect('/dashboard' if load_user() else '/login')
+    """Gaeste sehen die Landingpage, eingeloggte Nutzer direkt die Uebersicht."""
+    if load_user():
+        return redirect('/dashboard')
+    return render_template('landing.html')
 
 
 @app.route('/login')
@@ -274,6 +280,7 @@ def api_config():
 
 if __name__ == '__main__':
     app.config['SESSION_COOKIE_SECURE'] = False  # lokal ohne HTTPS
+    app.config['DEV_MODE'] = True
     port = int(os.environ.get('PORT', '5000'))
     log.info('%s %s laeuft auf http://localhost:%d', APP_NAME, APP_VERSION, port)
     app.run(host='0.0.0.0', port=port, debug=os.environ.get('FLASK_DEBUG') == '1')
