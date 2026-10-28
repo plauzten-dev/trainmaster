@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="de">
+<head>
+{% include '_head.html' %}
+<title>{{ ex.title if ex else 'Link ungültig' }} · {{ APP_NAME }}</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="/static/css/pages.css?v={{ APP_VERSION }}">
+</head>
+<body class="public-body" data-role="{{ current_user.role if current_user else '' }}">
+{% include '_icons.html' %}
+<script type="application/json" id="app-config">{{ FRONTEND_CONFIG|tojson }}</script>
+<div class="ambient" aria-hidden="true"></div>
+<main class="public-wrap">
+  <a class="brand public-brand" href="/"><img class="brand-logo" src="/static/icons/logo.svg" alt="">{{ APP_NAME }}</a>
+  {% if ex %}
+  {% set sk = {'Fußball':'fussball','Tennis':'tennis','Floorball':'floorball','Basketball':'basketball','Volleyball':'volleyball','Gym':'gym','Allgemein':'allgemein'}[ex.sport] or 'allgemein' %}
+  <article class="card flush share-card">
+    <div class="share-media">
+      {% if ex.image_path %}<img class="ex-img" src="{{ ex.image_path if ex.image_path.startswith('http') else '/uploads/' ~ ex.image_path }}" alt="">
+      {% else %}<div class="sport-art ex-img" style="--c:var(--s-{{ sk }})"><svg class="motif big-bg" viewBox="0 0 24 24"><use href="#s-{{ sk }}"/></svg><svg class="motif" viewBox="0 0 24 24"><use href="#s-{{ sk }}"/></svg></div>{% endif %}
+    </div>
+    <div class="share-body">
+      <span class="badge accent">Geteilte Übung</span>
+      <h1 class="share-title">{{ ex.title }}</h1>
+      <div class="meta-grid">
+        <div class="meta-cell"><span class="sport-ic sm" style="--c:var(--s-{{ sk }})"><svg class="i" viewBox="0 0 24 24"><use href="#s-{{ sk }}"/></svg></span><span><small>Sportart</small><b>{{ ex.sport }}</b></span></div>
+        <div class="meta-cell"><svg class="i"><use href="#i-users"/></svg><span><small>Feldspieler</small><b>{{ ex.field_players }}</b></span></div>
+        <div class="meta-cell"><svg class="i"><use href="#i-goal"/></svg><span><small>Torhüter</small><b>{{ ex.goalkeepers }}</b></span></div>
+        <div class="meta-cell"><svg class="i"><use href="#i-target"/></svg><span><small>Kernkompetenz</small><b>{{ ex.core_competency }}</b></span></div>
+        <div class="meta-cell"><svg class="i"><use href="#i-field"/></svg><span><small>Spielfeld</small><b>{{ ex.field_size }}</b></span></div>
+        <div class="meta-cell"><svg class="i"><use href="#i-gauge"/></svg><span><small>Schwierigkeit</small><b>{{ ex.difficulty }}</b></span></div>
+      </div>
+      <h3 class="sub-h">Beschreibung</h3>
+      <p class="pre">{{ ex.description }}</p>
+      <div class="share-actions">
+        {% if current_user %}
+        <button class="btn btn-primary" type="button" id="importBtn" data-token="{{ token }}"><svg class="i sm"><use href="#i-download"/></svg>In meine Übungen kopieren</button>
+        {% else %}
+        <div class="login-hint"><svg class="i"><use href="#i-info"/></svg><span>Melde dich an, um diese Übung in deine Sammlung zu kopieren.</span></div>
+        <a class="btn btn-primary" href="/login">Anmelden</a>
+        <a class="btn" href="/login?mode=register">Kostenlos registrieren</a>
+        {% endif %}
+        <button class="btn btn-glass" type="button" id="copyBtn"><svg class="i sm"><use href="#i-copy"/></svg>Link kopieren</button>
+      </div>
+    </div>
+  </article>
+  {% else %}
+  <div class="card"><div class="empty"><div class="empty-ic"><svg class="i"><use href="#i-unlink"/></svg></div><h3>Link ungültig</h3><p>Diese Übung wurde nicht gefunden oder der Link wurde widerrufen.</p><a class="btn btn-primary" href="/">Zu {{ APP_NAME }}</a></div></div>
+  {% endif %}
+  <footer class="auth-foot"><a href="/privacy">Datenschutz</a><span>·</span><a href="/imprint">Impressum</a></footer>
+</main>
+<div class="toast-host" id="toastHost" aria-live="polite"></div>
+<script src="/static/js/core.js?v={{ APP_VERSION }}"></script>
+<script src="/static/js/share.js?v={{ APP_VERSION }}"></script>
+</body>
+</html>

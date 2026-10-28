@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Training{% endblock %}
+{% block content %}
+<div id="training" data-id="{{ training_id }}">
+  <div class="tr-hero card flush" id="trHero"><div class="skeleton" style="height:180px;border-radius:0"></div></div>
+  <div class="kpis" id="trKpis"></div>
+  <div class="segmented tr-tabs" id="trTabs" role="tablist">
+    <button type="button" class="active" data-tab="exercises" role="tab">Übungen</button>
+    <button type="button" data-tab="history" role="tab">Verlauf</button>
+    <button type="button" data-tab="notes" role="tab">Notizen</button>
+  </div>
+  <section class="tr-pane" data-pane="exercises" id="paneExercises"><div class="loading"><span class="spinner"></span></div></section>
+  <section class="tr-pane hidden" data-pane="history" id="paneHistory"></section>
+  <section class="tr-pane hidden" data-pane="notes" id="paneNotes">
+    <div class="card">
+      <div class="row between" style="margin-bottom:8px"><span class="label">Notizen zum Training</span><span class="faint" id="notesStatus"></span></div>
+      <textarea class="textarea notes-area" id="notesArea" rows="10" maxlength="20000" placeholder="Ziele, Material, Beobachtungen …"></textarea>
+    </div>
+  </section>
+</div>
+{% endblock %}
+{% block scripts %}<script src="/static/js/training.js?v={{ APP_VERSION }}"></script>{% endblock %}

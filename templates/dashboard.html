@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}Übersicht{% endblock %}
+{% block content %}
+<header class="page-head dash-head">
+  <div><h1 class="large-title">Übersicht</h1><p class="page-sub" id="dashGreeting">Hallo, {{ current_user.username }}</p></div>
+  <div class="head-actions">
+    <button class="icon-btn btn-glass bell" type="button" id="bellBtn" aria-label="Demnächst"><svg class="i"><use href="#i-bell"/></svg><span class="bell-dot hidden" id="bellDot"></span></button>
+    {% include '_avatar.html' %}
+  </div>
+</header>
+<div id="dash">
+  <section class="today-hero card flush" id="todayHero"><div class="skeleton" style="height:120px;border-radius:0"></div></section>
+
+  <section class="week-card card" id="weekCard"><div class="skeleton" style="height:96px"></div></section>
+
+  <h2 class="section-title">Bibliothek</h2>
+  <nav class="list library" id="library" aria-label="Bibliothek"></nav>
+
+  <h2 class="section-title">Nächste Tage <a href="/calendar">Kalender</a></h2>
+  <div class="hscroll" id="upcoming"></div>
+
+  <h2 class="section-title">Vorgeschlagene Übungen <a href="/exercises">Alle</a></h2>
+  <div class="hscroll" id="suggested"></div>
+</div>
+{% endblock %}
+{% block scripts %}<script src="/static/js/dashboard.js?v={{ APP_VERSION }}"></script>{% endblock %}

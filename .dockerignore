@@ -1,0 +1,9 @@
+*.db
+*.db-wal
+*.db-shm
+secret_key.txt
+uploads/
+__pycache__/
+.git/
+.env
+Masterprompt_Neues_Projekt/

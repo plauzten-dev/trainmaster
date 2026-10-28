@@ -1,0 +1,27 @@
+{
+  "name": "TrainMaster",
+  "short_name": "TrainMaster",
+  "description": "Trainingsplanung für Trainer, Spieler und Privatpersonen.",
+  "start_url": "/dashboard",
+  "scope": "/",
+  "id": "/dashboard",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "lang": "de",
+  "dir": "ltr",
+  "theme_color": "#f0284f",
+  "background_color": "#f2f2f7",
+  "categories": ["sports", "productivity"],
+  "icons": [
+    { "src": "/static/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/static/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/static/icons/maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "/static/icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "/static/icons/logo.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ],
+  "shortcuts": [
+    { "name": "Neues Training", "short_name": "Training", "url": "/calendar?new=1", "icons": [{ "src": "/static/icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Meine Trainings", "short_name": "Trainings", "url": "/my-trainings", "icons": [{ "src": "/static/icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Übungsdatenbank", "short_name": "Übungen", "url": "/exercises", "icons": [{ "src": "/static/icons/icon-192.png", "sizes": "192x192" }] }
+  ]
+}

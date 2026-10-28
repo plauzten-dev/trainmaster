@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Übungen{% endblock %}
+{% block content %}
+<header class="page-head">
+  <div><h1 class="large-title">Übungen</h1><p class="page-sub" id="exCount">&nbsp;</p></div>
+  <div class="head-actions">
+    <button class="btn btn-glass" type="button" id="importBtn" aria-label="Übung über Link importieren"><svg class="i sm"><use href="#i-link"/></svg><span class="btn-label">Via Link</span></button>
+    <button class="btn btn-primary" type="button" id="newExBtn"><svg class="i sm"><use href="#i-plus"/></svg><span class="btn-label">Neue Übung</span></button>
+    {% include '_avatar.html' %}
+  </div>
+</header>
+
+<div class="toolbar">
+  <label class="search"><svg class="i"><use href="#i-search"/></svg><input class="input" type="search" id="exSearch" placeholder="Übungen durchsuchen" autocomplete="off" aria-label="Übungen durchsuchen"></label>
+  <button class="btn btn-glass filter-toggle" type="button" id="filterToggle" aria-expanded="false"><svg class="i sm"><use href="#i-filter"/></svg><span>Filter</span><span class="count-dot hidden" id="filterBadge"></span></button>
+</div>
+<div class="chips sport-tabs" id="sportTabs" role="tablist"></div>
+
+<div class="filter-panel card" id="filterPanel">
+  <div class="filter-grid">
+    <div class="field"><label for="fPlayers">Feldspieler</label><select class="select" id="fPlayers"></select></div>
+    <div class="field"><label for="fGoal">Torhüter</label><select class="select" id="fGoal"><option value="">Alle</option><option value="0">0</option><option value="1">1</option><option value="2">2</option></select></div>
+    <div class="field"><label for="fComp">Kernkompetenz</label><select class="select" id="fComp"></select></div>
+    <div class="field"><label for="fSize">Spielfeldgröße</label><select class="select" id="fSize"></select></div>
+    <div class="field filter-wide"><span class="label">Schwierigkeit</span><div class="segmented" id="fDiff"></div></div>
+  </div>
+  <div class="filter-foot"><span class="muted" id="filterActiveText"></span><button class="btn btn-sm" type="button" id="filterReset"><svg class="i sm"><use href="#i-refresh"/></svg>Zurücksetzen</button></div>
+</div>
+
+<div class="ex-grid" id="exGrid"></div>
+{% endblock %}
+{% block scripts %}<script src="/static/js/exercises.js?v={{ APP_VERSION }}"></script>{% endblock %}

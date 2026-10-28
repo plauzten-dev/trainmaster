@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}Kalender{% endblock %}
+{% block content %}
+<header class="page-head">
+  <div><h1 class="large-title">Kalender</h1></div>
+  <div class="head-actions">
+    {% if current_user.role == 'trainer' %}<button class="btn btn-glass" type="button" id="newEventBtn"><svg class="i sm"><use href="#i-cal-plus"/></svg><span class="btn-label">Termin</span></button>{% endif %}
+    <button class="btn btn-primary" type="button" id="newTrainingBtn"><svg class="i sm"><use href="#i-plus"/></svg><span class="btn-label">Training</span></button>
+    {% include '_avatar.html' %}
+  </div>
+</header>
+<div class="cal-toolbar">
+  <div class="row cal-nav">
+    <button class="icon-btn" type="button" id="calPrev" aria-label="Zurück"><svg class="i"><use href="#i-chev-left"/></svg></button>
+    <h2 class="cal-title" id="calTitle" aria-live="polite"></h2>
+    <button class="icon-btn" type="button" id="calNext" aria-label="Weiter"><svg class="i"><use href="#i-chev-right"/></svg></button>
+  </div>
+  <div class="row">
+    <button class="btn btn-sm" type="button" id="calToday">Heute</button>
+    <div class="segmented" id="calView"><button type="button" data-view="month">Monat</button><button type="button" data-view="week">Woche</button></div>
+  </div>
+</div>
+<div class="cal-layout" id="calLayout">
+  <div class="cal-main card flush" id="calMain"></div>
+  <aside class="cal-day card" id="calDay"></aside>
+</div>
+<div class="cal-legend">
+  <span><span class="sport-dot" style="--c:var(--accent)"></span>Training</span>
+  {% if current_user.role != 'private' %}
+  <span><span class="sport-dot" style="--c:var(--ev-spiel)"></span>Spiel</span>
+  <span><span class="sport-dot" style="--c:var(--ev-turnier)"></span>Turnier</span>
+  <span><span class="sport-dot" style="--c:var(--ev-sonstiges)"></span>Termin</span>
+  {% endif %}
+</div>
+{% endblock %}
+{% block scripts %}<script src="/static/js/calendar.js?v={{ APP_VERSION }}"></script>{% endblock %}

@@ -1,0 +1,462 @@
+[
+  {
+    "title": "Passspiel im Dreieck",
+    "description": "Drei Spieler bilden ein Dreieck mit ca. 10 m Abstand. Der Ball wird flach und präzise zugespielt. Variation: Direktes Spiel (1 Berührung), mit Laufweg nach dem Pass. Fokus auf Passqualität, Annahme und Kommunikation.",
+    "field_players": 3,
+    "goalkeepers": 0,
+    "core_competency": "Passspiel",
+    "difficulty": "Anfänger",
+    "field_size": "Klein (10x10m)",
+    "sport": "Fußball"
+  },
+  {
+    "title": "Rondo 4 gegen 2",
+    "description": "Vier Spieler halten den Ball gegen zwei Verteidiger in einem ca. 8×8 m Quadrat. Verliert ein Angreifer den Ball, wechselt er mit dem Verteidiger. Schult Ballsicherheit, Übersicht und schnelles Kurzpassspiel.",
+    "field_players": 6,
+    "goalkeepers": 0,
+    "core_competency": "Passspiel",
+    "difficulty": "Fortgeschritten",
+    "field_size": "Klein (10x10m)",
+    "sport": "Fußball"
+  },
+  {
+    "title": "Torschussübung aus dem Lauf",
+    "description": "Spieler startet aus 20 m, nimmt einen Querpass an und schließt aus der Bewegung ab. 5 Wiederholungen pro Spieler von links und rechts. Fokus auf Schuss aus dem Lauf und saubere Ballannahme.",
+    "field_players": 4,
+    "goalkeepers": 1,
+    "core_competency": "Torschuss",
+    "difficulty": "Fortgeschritten",
+    "field_size": "Mittel (20x30m)",
+    "sport": "Fußball"
+  },
+  {
+    "title": "Dribbling-Parcours",
+    "description": "Hütchen-Parcours über 20 m mit Slalom, Richtungswechseln und Tunneln. Spieler dribbliert mit Tempo durch den Kurs. Variation: Links/rechts schwacher Fuß. Schult Ballführung, Körpertäuschung und Koordination.",
+    "field_players": 1,
+    "goalkeepers": 0,
+    "core_competency": "Dribbling",
+    "difficulty": "Anfänger",
+    "field_size": "Klein (10x10m)",
+    "sport": "Fußball"
+  },
+  {
+    "title": "Pressing-Übung 3 gegen 3",
+    "description": "Zwei Teams spielen 3 gegen 3 auf einem 30×20 m Feld. Das Team ohne Ball presst koordiniert. Ziel: Ball innerhalb von 6 Sekunden zurückgewinnen. Schult Pressing-Organisation, Laufwege und Zweikampfverhalten.",
+    "field_players": 6,
+    "goalkeepers": 0,
+    "core_competency": "Pressing",
+    "difficulty": "Fortgeschritten",
+    "field_size": "Mittel (20x30m)",
+    "sport": "Fußball"
+  },
+  {
+    "title": "Spielaufbau mit Torhüter",
+    "description": "Torhüter baut mit zwei Innenverteidigern und einem Mittelfeldspieler gegen 2 Presser auf. Ziel: Ball flach aus dem Pressing herausspielen und den freien Spieler finden. Schult Aufbau unter Druck.",
+    "field_players": 5,
+    "goalkeepers": 1,
+    "core_competency": "Spielaufbau",
+    "difficulty": "Fortgeschritten",
+    "field_size": "Groß (40x30m)",
+    "sport": "Fußball"
+  },
+  {
+    "title": "Torwart Reaktionsübung",
+    "description": "Trainer schießt aus 7–11 m abwechselnd in verschiedene Ecken. Torhüter reagiert aus Grundstellung. Serie: 10 Schüsse, kurze Pause, wiederholen. Variation: Ball aus der Hand werfen für tiefere Bälle.",
+    "field_players": 0,
+    "goalkeepers": 1,
+    "core_competency": "Torwartspiel",
+    "difficulty": "Anfänger",
+    "field_size": "Klein (10x10m)",
+    "sport": "Fußball"
+  },
+  {
+    "title": "11 gegen 11 Spielform",
+    "description": "Freies Spiel auf Großfeld. Schwerpunkt auf Spielprinzipien (z. B. Pressing nach Ballverlust, schnelles Umschalten). Trainer stoppt bei Situationen und erklärt. Dauer: 2×15 Minuten mit Pause.",
+    "field_players": 10,
+    "goalkeepers": 2,
+    "core_competency": "Spielintelligenz",
+    "difficulty": "Profi",
+    "field_size": "Groß (Vollfeld)",
+    "sport": "Fußball"
+  },
+  {
+    "title": "Vorhand-Grundschlag",
+    "description": "Grundübung für den Vorhandschlag. Spieler steht an der Grundlinie, Trainingspartner spielt Bälle zu. Fokus auf Schulterdrehung, Ausholbewegung und sauberen Treffpunkt. 3 Serien à 20 Schläge. Variation: mit Zielvorgabe (Ecken anvisieren).",
+    "field_players": 1,
+    "goalkeepers": 0,
+    "core_competency": "Schlagtechnik",
+    "difficulty": "Anfänger",
+    "field_size": "Klein (10x10m)",
+    "sport": "Tennis"
+  },
+  {
+    "title": "Aufschlag-Ritual",
+    "description": "Systematisches Aufschlagtraining: Ballwurf, Trophäenposition, Streckbewegung. Zunächst ohne Ball üben, dann mit. 5 Serien à 10 Aufschläge. Ziel: Konstanz ins T-Feld und in die Außenseite. Videoanalyse empfohlen.",
+    "field_players": 1,
+    "goalkeepers": 0,
+    "core_competency": "Aufschlag",
+    "difficulty": "Fortgeschritten",
+    "field_size": "Mittel (20x30m)",
+    "sport": "Tennis"
+  },
+  {
+    "title": "Volley am Netz",
+    "description": "Zwei Spieler stehen je eine Seite am Netz. Kontrolliertes Volley-Spiel über kurze Distanz. Fokus auf weiche Hände, frühe Schlägerbereitstellung und stabiler Stand. Steigerung: Aus Grundlinie ans Netz sprinten und direkt Volley spielen.",
+    "field_players": 2,
+    "goalkeepers": 0,
+    "core_competency": "Netzspiel",
+    "difficulty": "Fortgeschritten",
+    "field_size": "Klein (10x10m)",
+    "sport": "Tennis"
+  },
+  {
+    "title": "Grundlinien-Rallye cross",
+    "description": "Zwei Spieler spielen kontrollierte Grundlinien-Rallye diagonal (cross). Ziel ist Konsistenz über 20 Schläge am Stück. Fokus auf gute Positionierung, Beinarbeit und frühe Ballannahme. Zählen gemeinsam die Schläge laut mit.",
+    "field_players": 2,
+    "goalkeepers": 0,
+    "core_competency": "Grundlinienspiel",
+    "difficulty": "Anfänger",
+    "field_size": "Mittel (20x30m)",
+    "sport": "Tennis"
+  },
+  {
+    "title": "Return-Training",
+    "description": "Trainingspartner oder Ballmaschine spielt schnelle erste Aufschläge. Returnspieler übt kompakten, reaktionsschnellen Return. Fokus: Schlägerführung verkürzen, Körperschwerpunkt tief, Schritt in den Ball. 3×10 Returns auf jede Seite.",
+    "field_players": 2,
+    "goalkeepers": 0,
+    "core_competency": "Return",
+    "difficulty": "Fortgeschritten",
+    "field_size": "Mittel (20x30m)",
+    "sport": "Tennis"
+  },
+  {
+    "title": "Passspiel in der Bewegung",
+    "description": "Drei Spieler in einer Linie laufen parallel die Längsseite des Feldes entlang und spielen sich dabei den Ball zu. Fokus auf harten, flachen Pass, Stick-Kontrolle in Bewegung und Timing. 5 Wiederholungen pro Gruppe.",
+    "field_players": 3,
+    "goalkeepers": 0,
+    "core_competency": "Passspiel",
+    "difficulty": "Anfänger",
+    "field_size": "Mittel (20x30m)",
+    "sport": "Floorball"
+  },
+  {
+    "title": "Torschuss aus dem Kreis",
+    "description": "Spieler dribbelt aus verschiedenen Winkeln in den Schusskreis und schließt auf das Tor ab. Torhüter im Kasten. Fokus auf schnellen Schuss, Gewichtsverlagerung und Zielgenauigkeit. Je 10 Schüsse von links, mitte und rechts.",
+    "field_players": 2,
+    "goalkeepers": 1,
+    "core_competency": "Torschuss",
+    "difficulty": "Fortgeschritten",
+    "field_size": "Mittel (20x30m)",
+    "sport": "Floorball"
+  },
+  {
+    "title": "Stickhandling-Parcours",
+    "description": "Hütchenparcours über 15 m mit engen Kurven und Hindernissen. Spieler dribbliert durch den Kurs mit Fokus auf niedrige Stockführung, Ball nah am Stock halten und kontrollierte Richtungswechsel. Zeitnahme für Motivation.",
+    "field_players": 1,
+    "goalkeepers": 0,
+    "core_competency": "Stickhandling",
+    "difficulty": "Anfänger",
+    "field_size": "Klein (10x10m)",
+    "sport": "Floorball"
+  },
+  {
+    "title": "5 gegen 5 Spielform",
+    "description": "Freies Spiel 5 gegen 5 auf Halbfeld mit Toren. Schwerpunkt auf schnelles Umschalten und geordneten Spielaufbau. Trainer unterbricht bei wichtigen Situationen. Dauer: 2×10 Minuten mit 2 Minuten Pause.",
+    "field_players": 10,
+    "goalkeepers": 2,
+    "core_competency": "Spielaufbau",
+    "difficulty": "Fortgeschritten",
+    "field_size": "Groß (Vollfeld)",
+    "sport": "Floorball"
+  },
+  {
+    "title": "Pressing und Balleroberung",
+    "description": "Team A baut auf, Team B presst koordiniert. Ziel: Ball in 8 Sekunden gewinnen. Trainer gibt Signal zum Pressen. Schult Pressingstruktur, Laufwege beim Pressing und Zweikampfverhalten im System.",
+    "field_players": 8,
+    "goalkeepers": 0,
+    "core_competency": "Pressing",
+    "difficulty": "Profi",
+    "field_size": "Groß (40x30m)",
+    "sport": "Floorball"
+  },
+  {
+    "title": "Dribbling mit Richtungswechsel",
+    "description": "Spieler dribbeln durch einen Hütchenparcours mit engen Kurven und abrupten Richtungswechseln. Fokus auf niedrige Ballführung, Blickkontrolle und Körpertäuschung. Variation: Wechsel zwischen starker und schwacher Hand nach jedem Hütchen. 3 Serien pro Spieler.",
+    "field_players": 1,
+    "goalkeepers": 0,
+    "core_competency": "Dribbling",
+    "difficulty": "Anfänger",
+    "field_size": "Klein (10x10m)",
+    "sport": "Basketball"
+  },
+  {
+    "title": "Korblegger rechts und links",
+    "description": "Spieler startet von der Freiwurflinie, dribbelt diagonal zum Korb und legt links oder rechts ab. Je 15 Wiederholungen pro Seite. Fokus auf die korrekte Schrittfolge (2-Schritt-Rhythmus) und weichen Abschluss an das Brett. Variation: mit Gegner der leichten Druck gibt.",
+    "field_players": 1,
+    "goalkeepers": 0,
+    "core_competency": "Korbwurf",
+    "difficulty": "Anfänger",
+    "field_size": "Klein (10x10m)",
+    "sport": "Basketball"
+  },
+  {
+    "title": "Freiwurf-Training",
+    "description": "Jeder Spieler absolviert 5 Serien à 10 Freiwürfe. Nach jedem Wurf kurze Routine (Dribbling, Ausatmen). Auswertung: Trefferquote notieren und mit Vorwoche vergleichen. Fokus auf konstante Wurfbewegung, Standfestigkeit und mentale Routine.",
+    "field_players": 1,
+    "goalkeepers": 0,
+    "core_competency": "Korbwurf",
+    "difficulty": "Anfänger",
+    "field_size": "Mittel (20x30m)",
+    "sport": "Basketball"
+  },
+  {
+    "title": "Pick and Roll",
+    "description": "Zwei Spieler üben die Pick-and-Roll-Kombination: Screensetter stellt Block, Ballführer nutzt den Block und entscheidet situativ – Wurf oder Pass auf den abrollenden Spieler. Fokus auf Timing des Blocks, Kommunikation und die Entscheidungsfindung des Ballführers.",
+    "field_players": 2,
+    "goalkeepers": 0,
+    "core_competency": "Taktik",
+    "difficulty": "Fortgeschritten",
+    "field_size": "Mittel (20x30m)",
+    "sport": "Basketball"
+  },
+  {
+    "title": "3 gegen 3 Halbfeld",
+    "description": "Zwei Teams spielen 3 gegen 3 auf einem Halbfeld. Angriff hat 24 Sekunden für einen Abschluss. Fokus auf Bewegung ohne Ball, Spacing (Abstände halten) und schnelles Umschalten nach Ballgewinn. Trainer kommentiert taktische Entscheidungen in Spielpausen.",
+    "field_players": 6,
+    "goalkeepers": 0,
+    "core_competency": "Spielform",
+    "difficulty": "Fortgeschritten",
+    "field_size": "Mittel (20x30m)",
+    "sport": "Basketball"
+  },
+  {
+    "title": "Fastbreak-Training",
+    "description": "3 gegen 2 Überzahl-Fastbreak: Drei Angreifer starten nach Ballgewinn gegen zwei Verteidiger. Fokus auf schnellen Vorwärtstransport, Breite halten und den richtigen Moment für den Abschluss erkennen. Nach jedem Angriff Rollenwechsel. Ziel: Abschluss innerhalb von 5 Sekunden nach Halbfeld.",
+    "field_players": 5,
+    "goalkeepers": 0,
+    "core_competency": "Schnellangriff",
+    "difficulty": "Fortgeschritten",
+    "field_size": "Groß (40x30m)",
+    "sport": "Basketball"
+  },
+  {
+    "title": "5 gegen 5 Vollfeld",
+    "description": "Freies Spiel auf Vollfeld mit regulären Regeln. Trainer setzt taktische Schwerpunkte: z. B. Zonenverteidigung, Mandeckung oder spezifische Angriffssysteme. Spielzeit 4×8 Minuten. Auswertung nach dem Spiel: Was hat funktioniert, was nicht?",
+    "field_players": 10,
+    "goalkeepers": 0,
+    "core_competency": "Spielform",
+    "difficulty": "Profi",
+    "field_size": "Groß (Vollfeld)",
+    "sport": "Basketball"
+  },
+  {
+    "title": "Bagger – Unterarm-Annahme",
+    "description": "Spieler übt den Unterarm-Pass (Bagger) gegen die Wand oder mit einem Partner. Fokus auf tiefen Stand, gestreckten Armen und Treffpunkt vor dem Körper. Variation: Partner wirft Bälle aus verschiedenen Winkeln. 3 Serien à 20 Pässe.",
+    "field_players": 2,
+    "goalkeepers": 0,
+    "core_competency": "Annahme",
+    "difficulty": "Anfänger",
+    "field_size": "Klein (10x10m)",
+    "sport": "Volleyball"
+  },
+  {
+    "title": "Pritschen – Oberes Zuspiel",
+    "description": "Zwei Spieler stehen sich gegenüber und spielen sich den Ball per Pritsch zu. Fokus auf Fingerstellung, stabiles Handgelenk und Kraftdosierung. Variation: Dreieck mit drei Spielern, präzises Zuspiel zur Antennenlinie. Zählen gemeinsam Fehlerfreie Pässe bis 20.",
+    "field_players": 2,
+    "goalkeepers": 0,
+    "core_competency": "Zuspiel",
+    "difficulty": "Anfänger",
+    "field_size": "Klein (10x10m)",
+    "sport": "Volleyball"
+  },
+  {
+    "title": "Aufschlag-Training",
+    "description": "Jeder Spieler führt 5 Serien à 8 Aufschläge durch, abwechselnd Float- und Sprungaufschlag. Ziel: Aufschlag gezielt in die Zonen 1 und 5 des gegnerischen Feldes spielen. Fokus auf stabilen Ballabwurf, Anlaufrhythmus und Arm-Schnelligkeit.",
+    "field_players": 1,
+    "goalkeepers": 0,
+    "core_competency": "Aufschlag",
+    "difficulty": "Anfänger",
+    "field_size": "Mittel (20x30m)",
+    "sport": "Volleyball"
+  },
+  {
+    "title": "Block-Training am Netz",
+    "description": "Zwei Spieler stehen auf gegenüberliegenden Seiten am Netz. Angreifer schlägt den Ball, Blocker arbeitet an Sprungzeit und Handstellung. Fokus auf Beinarbeit, Absprung-Timing und korrektes Übergreifen mit den Händen. 10 Serien pro Spieler.",
+    "field_players": 2,
+    "goalkeepers": 0,
+    "core_competency": "Block",
+    "difficulty": "Fortgeschritten",
+    "field_size": "Klein (10x10m)",
+    "sport": "Volleyball"
+  },
+  {
+    "title": "Angriff – Smash und Aufschlag",
+    "description": "Zuspiel vom Zuspieler, Außenangreifer oder Mittelangreifer schlägt an. Trainer gibt vor: gerade oder diagonale Angriffsrichtung. Fokus auf Anlauf (3-Schritt), Absprung und Armschlagbewegung. 10 Angriffe von jeder Position.",
+    "field_players": 4,
+    "goalkeepers": 0,
+    "core_competency": "Angriff",
+    "difficulty": "Fortgeschritten",
+    "field_size": "Mittel (20x30m)",
+    "sport": "Volleyball"
+  },
+  {
+    "title": "6 gegen 6 Spielform",
+    "description": "Vollständige Spielform auf Regulation-Feld mit allen Regeln (Rotation, Libero, etc.). Trainer stoppt bei taktischen Fehlern und erklärt. Schwerpunkt auf Serve-Receive-System und geordneten Angriffskombinationen. Dauer: 3 Sätze bis 15 Punkte.",
+    "field_players": 12,
+    "goalkeepers": 0,
+    "core_competency": "Spielform",
+    "difficulty": "Profi",
+    "field_size": "Groß (Vollfeld)",
+    "sport": "Volleyball"
+  },
+  {
+    "title": "Kniebeugen – Grundlagen",
+    "description": "Basis-Übung für Bein- und Gesäßkraft. Füße schulterbreit, Zehen leicht nach außen. Hüfte wird bis auf Kniehöhe abgesenkt, Rücken bleibt gerade. 4 Serien à 12 Wiederholungen. Variation: Goblet Squat mit Kurzhantel, Pause-Squat für mehr Intensität.",
+    "field_players": 1,
+    "goalkeepers": 0,
+    "core_competency": "Kraft",
+    "difficulty": "Anfänger",
+    "field_size": "Klein (10x10m)",
+    "sport": "Gym"
+  },
+  {
+    "title": "Ausfallschritte (Lunges)",
+    "description": "Wechselnde Ausfallschritte vorwärts über eine 10-m-Strecke. Fokus auf aufrechten Oberkörper und 90-Grad-Winkel im vorderen Knie. 3 Serien à 20 Schritte (10 pro Bein). Variation: Rückwärts-Lunge, seitliche Lunge oder mit Kurzhanteln.",
+    "field_players": 1,
+    "goalkeepers": 0,
+    "core_competency": "Kraft",
+    "difficulty": "Anfänger",
+    "field_size": "Klein (10x10m)",
+    "sport": "Gym"
+  },
+  {
+    "title": "Klimmzüge / Latzug",
+    "description": "Untergriff- oder Übergriff-Klimmzüge an der Stange. Körper hängt frei, Zug bis Kinn über die Stange. Für Einsteiger: Gummiband zur Unterstützung nutzen. 4 Serien bis zur Muskelermüdung. Variation: Enger Griff für mehr Bizep-Aktivierung, weiter Griff für Latissimus.",
+    "field_players": 1,
+    "goalkeepers": 0,
+    "core_competency": "Kraft",
+    "difficulty": "Fortgeschritten",
+    "field_size": "Klein (10x10m)",
+    "sport": "Gym"
+  },
+  {
+    "title": "Plank – Rumpfstabilisierung",
+    "description": "Unterarmstütz: Körper bildet eine gerade Linie von Kopf bis Ferse. Bauch- und Gesäßmuskeln anspannen. 4 Serien à 30–60 Sekunden mit 20 Sekunden Pause. Variation: Seitstütz, Plank mit Beinhebenoder Plank-Touches für mehr Schwierigkeit.",
+    "field_players": 1,
+    "goalkeepers": 0,
+    "core_competency": "Rumpfkraft",
+    "difficulty": "Anfänger",
+    "field_size": "Klein (10x10m)",
+    "sport": "Gym"
+  },
+  {
+    "title": "HIIT-Zirkeltraining",
+    "description": "6 Stationen, je 40 Sekunden Arbeit / 20 Sekunden Pause: Burpees, Mountain Climbers, Jump Squats, Push-ups, High Knees, Russian Twists. 3 Runden mit 90 Sekunden Pause zwischen den Runden. Intensität anpassen durch Tempovariation.",
+    "field_players": 1,
+    "goalkeepers": 0,
+    "core_competency": "Ausdauer",
+    "difficulty": "Fortgeschritten",
+    "field_size": "Mittel (20x30m)",
+    "sport": "Gym"
+  },
+  {
+    "title": "Box Jumps – Explosivkraft",
+    "description": "Beidbeiniger Absprung auf eine stabile Erhöhung (40–60 cm), sofort wieder hinuntersteigen. Fokus auf explosiven Absprung, weiche Landung auf beiden Füßen und aufrechte Körperhaltung. 4 Serien à 8 Wiederholungen. Variation: einbeinig, Tiefsprung mit anschließendem Hochsprung.",
+    "field_players": 1,
+    "goalkeepers": 0,
+    "core_competency": "Explosivkraft",
+    "difficulty": "Fortgeschritten",
+    "field_size": "Klein (10x10m)",
+    "sport": "Gym"
+  },
+  {
+    "title": "Intervall-Laufen",
+    "description": "6–8 Intervalle: 200 m bei 80-90% Maximalgeschwindigkeit, 90 Sekunden Pause dazwischen. Aufwärmen: 5 Min. lockeres Joggen. Abwärmen: 5 Min. Laufen + Dehnen. Ziel: Aerobe und anaerobe Kapazität verbessern. Tempo nach jeder Session steigern.",
+    "field_players": 1,
+    "goalkeepers": 0,
+    "core_competency": "Ausdauer",
+    "difficulty": "Anfänger",
+    "field_size": "Groß (40x30m)",
+    "sport": "Gym"
+  },
+  {
+    "title": "Dynamisches Aufwärmen",
+    "description": "Allgemeines Aufwärmprogramm für das gesamte Team: 3 Minuten lockeres Einlaufen, dann dynamische Dehnungen in Bewegung – Ausfallschritte, Kniehebelauf, Anfersen, seitlicher Kreuzschritt. Danach 5 Minuten Koordinationsübungen (Skipping, Sidestepping). Dauer gesamt: 12–15 Minuten.",
+    "field_players": 0,
+    "goalkeepers": 0,
+    "core_competency": "Aufwärmen",
+    "difficulty": "Anfänger",
+    "field_size": "Mittel (20x30m)",
+    "sport": "Allgemein"
+  },
+  {
+    "title": "Statisches Dehnen – Beine",
+    "description": "Dehnung der großen Beinmuskelgruppen nach dem Training: Oberschenkel vorne (Quadrizeps), hinten (Hamstrings), Waden und Hüftbeuger. Jede Position 30–45 Sekunden halten. Keine federnden Bewegungen. Ruhige Atmung. Idealerweise auf einer weichen Unterlage durchführen.",
+    "field_players": 0,
+    "goalkeepers": 0,
+    "core_competency": "Dehnen",
+    "difficulty": "Anfänger",
+    "field_size": "Klein (10x10m)",
+    "sport": "Allgemein"
+  },
+  {
+    "title": "Statisches Dehnen – Oberkörper",
+    "description": "Dehnung von Schultern, Brust, Nacken und seitlicher Rumpfmuskulatur. Schulterdehnung: Arm über die Brust ziehen, 30 Sek. Brustdehnung: Hände hinter dem Rücken falten, Brust nach vorne öffnen. Nackenrollen langsam. Je 30 Sekunden pro Position, 2 Durchgänge.",
+    "field_players": 0,
+    "goalkeepers": 0,
+    "core_competency": "Dehnen",
+    "difficulty": "Anfänger",
+    "field_size": "Klein (10x10m)",
+    "sport": "Allgemein"
+  },
+  {
+    "title": "Koordinationsleiter",
+    "description": "Koordinationsleiter flach auf dem Boden: Einzel- und Doppelschritte, seitliche Schritte, In-Out-Sprünge. Jede Übung 3 Mal durch die Leiter, dann Wechsel. Tempo steigern. Schult Fußarbeit, Koordination und schnelle Reaktion – ideal als Aufwärmübung für alle Sportarten.",
+    "field_players": 1,
+    "goalkeepers": 0,
+    "core_competency": "Koordination",
+    "difficulty": "Anfänger",
+    "field_size": "Klein (10x10m)",
+    "sport": "Allgemein"
+  },
+  {
+    "title": "Rumpfstabilisierung – Basis",
+    "description": "Drei Grundübungen: Plank (3×30 Sek.), Seitstütz (3×20 Sek. pro Seite), Brücke/Glute Bridge (3×15 Wdh.). Kurze Pausen zwischen den Serien. Schult die tiefe Rumpfmuskulatur, verbessert Stabilität und beugt Verletzungen vor. Geeignet für alle Sportarten.",
+    "field_players": 0,
+    "goalkeepers": 0,
+    "core_competency": "Stabilisation",
+    "difficulty": "Anfänger",
+    "field_size": "Klein (10x10m)",
+    "sport": "Allgemein"
+  },
+  {
+    "title": "Cool-down – Auslaufen",
+    "description": "Lockeres Auslaufen für 5–8 Minuten bei 40–50% der Maximalgeschwindigkeit. Anschließend gemeinsames Gehen im Kreis mit tiefem Atmen. Senkt die Herzfrequenz kontrolliert ab und leitet die Regenerationsphase ein. Danach direkt in statisches Dehnen übergehen.",
+    "field_players": 0,
+    "goalkeepers": 0,
+    "core_competency": "Abschluss",
+    "difficulty": "Anfänger",
+    "field_size": "Mittel (20x30m)",
+    "sport": "Allgemein"
+  },
+  {
+    "title": "Regenerations-Dehnen",
+    "description": "Ausgiebiges Dehnen nach intensivem Training: Piriformis-Dehnung (Taubensitz), Hüftöffner, Schulter-Querdehnung und Brustwirbelsäulen-Mobilisation. Jede Position 45–60 Sekunden. Musik und ruhige Atmosphäre fördern die Entspannung. Dauer: 15 Minuten.",
+    "field_players": 0,
+    "goalkeepers": 0,
+    "core_competency": "Abschluss",
+    "difficulty": "Anfänger",
+    "field_size": "Klein (10x10m)",
+    "sport": "Allgemein"
+  },
+  {
+    "title": "Sprunggelenk- und Knie-Mobilisation",
+    "description": "Aktivierungsübungen vor dem Training: Zehenstand und Absenkung (3×15), Kniekreisen (30 Sek. pro Seite), einbeiniges Balancieren (30 Sek. pro Seite), Fußgelenk-Rollen. Schützt vor Verletzungen und bereitet Gelenke auf Belastung vor. Dauer: 5–7 Minuten.",
+    "field_players": 0,
+    "goalkeepers": 0,
+    "core_competency": "Aufwärmen",
+    "difficulty": "Anfänger",
+    "field_size": "Klein (10x10m)",
+    "sport": "Allgemein"
+  }
+]

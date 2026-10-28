@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="de">
+<head>
+{% include '_head.html' %}
+<title>{% block title %}{% endblock %} · {{ APP_NAME }}</title>
+<link rel="stylesheet" href="/static/css/pages.css?v={{ APP_VERSION }}">
+</head>
+<body class="public-body">
+{% include '_icons.html' %}
+<div class="ambient" aria-hidden="true"></div>
+<main class="public-wrap">
+  <div class="row between">
+    <a class="brand public-brand" href="/"><img class="brand-logo" src="/static/icons/logo.svg" alt="">{{ APP_NAME }}</a>
+    <a class="btn btn-glass btn-sm" href="{{ '/settings' if current_user else '/login' }}"><svg class="i sm"><use href="#i-chev-left"/></svg>Zurück</a>
+  </div>
+  <article class="card prose">{% block body %}{% endblock %}</article>
+  <footer class="auth-foot"><a href="/privacy">Datenschutz</a><span>·</span><a href="/imprint">Impressum</a><span>·</span><span class="faint">Version {{ APP_VERSION }}</span></footer>
+</main>
+{% block scripts %}{% endblock %}
+</body>
+</html>

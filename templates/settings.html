@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% block title %}Einstellungen{% endblock %}
+{% block content %}
+<header class="page-head"><div><h1 class="large-title">Einstellungen</h1></div></header>
+<div class="settings" id="settings">
+  <nav class="set-menu" id="setMenu" aria-label="Einstellungen">
+    <button class="set-profile-card card" type="button" data-open="profile">
+      <span id="menuAvatar"></span>
+      <span class="li-main"><span class="set-name" id="menuName">{{ current_user.username }}</span><span class="muted">{{ FRONTEND_CONFIG.role_labels[current_user.role] }} · Profil bearbeiten</span></span>
+      <svg class="i chev"><use href="#i-chev-right"/></svg>
+    </button>
+    <div class="list">
+      <button class="list-item" type="button" data-open="password"><span class="li-ic" style="--c:#8e8e93"><svg class="i"><use href="#i-lock"/></svg></span><span class="li-main li-title">Passwort ändern</span><svg class="i chev"><use href="#i-chev-right"/></svg></button>
+      <button class="list-item" type="button" data-open="account"><span class="li-ic" style="--c:var(--info)"><svg class="i"><use href="#i-user"/></svg></span><span class="li-main li-title">Konto-Informationen</span><svg class="i chev"><use href="#i-chev-right"/></svg></button>
+      <button class="list-item" type="button" data-open="appearance"><span class="li-ic" style="--c:#5e5ce6"><svg class="i"><use href="#i-moon"/></svg></span><span class="li-main li-title">Darstellung</span><svg class="i chev"><use href="#i-chev-right"/></svg></button>
+      <button class="list-item mobile-feature" type="button" data-open="notifications"><span class="li-ic" style="--c:var(--danger)"><svg class="i"><use href="#i-bell"/></svg></span><span class="li-main li-title">Benachrichtigungen</span><svg class="i chev"><use href="#i-chev-right"/></svg></button>
+    </div>
+    <div class="list">
+      <button class="list-item" type="button" data-open="data"><span class="li-ic" style="--c:var(--success)"><svg class="i"><use href="#i-shield"/></svg></span><span class="li-main li-title">Datenschutz &amp; Daten</span><svg class="i chev"><use href="#i-chev-right"/></svg></button>
+      <button class="list-item" type="button" data-open="help"><span class="li-ic" style="--c:var(--s-floorball)"><svg class="i"><use href="#i-help"/></svg></span><span class="li-main li-title">Hilfe</span><svg class="i chev"><use href="#i-chev-right"/></svg></button>
+      <button class="list-item" type="button" data-open="feedback"><span class="li-ic" style="--c:var(--warning)"><svg class="i"><use href="#i-message"/></svg></span><span class="li-main li-title">Feedback</span><svg class="i chev"><use href="#i-chev-right"/></svg></button>
+      <button class="list-item" type="button" data-open="roadmap"><span class="li-ic" style="--c:var(--s-gym)"><svg class="i"><use href="#i-sparkle"/></svg></span><span class="li-main li-title">Roadmap</span><svg class="i chev"><use href="#i-chev-right"/></svg></button>
+    </div>
+    <div class="list">
+      <button class="list-item" type="button" data-open="danger"><span class="li-ic" style="--c:var(--danger)"><svg class="i"><use href="#i-trash"/></svg></span><span class="li-main li-title" style="color:var(--danger)">Konto löschen</span><svg class="i chev"><use href="#i-chev-right"/></svg></button>
+      <button class="list-item" type="button" data-logout><span class="li-ic" style="--c:#8e8e93"><svg class="i"><use href="#i-logout"/></svg></span><span class="li-main li-title">Abmelden</span></button>
+    </div>
+  </nav>
+
+  <div class="set-sections">
+    <section class="set-section card" data-sec="profile">
+      <button class="btn btn-ghost set-back" type="button" data-back><svg class="i sm"><use href="#i-chev-left"/></svg>Einstellungen</button>
+      <h2 class="card-title"><svg class="i"><use href="#i-user"/></svg>Profil</h2>
+      <div class="set-avatar-row">
+        <span id="profAvatar"></span>
+        <div class="row wrap">
+          <label class="btn btn-tinted btn-sm" for="avatarInput"><svg class="i sm"><use href="#i-camera"/></svg>Bild wählen</label>
+          <input type="file" id="avatarInput" accept="image/*,.heic,.heif" class="sr-only">
+          <button class="btn btn-sm" type="button" id="avatarRemove">Entfernen</button>
+        </div>
+      </div>
+      <form id="profileForm" novalidate>
+        <div class="field"><label for="pfUser">Benutzername</label><input class="input" id="pfUser" maxlength="40" autocomplete="username"></div>
+        <div class="field"><label for="pfMail">E-Mail</label><input class="input" id="pfMail" type="email" maxlength="200" autocomplete="email"></div>
+        <p class="form-error" id="pfErr"></p>
+        <button class="btn btn-primary" type="submit">Speichern</button>
+      </form>
+    </section>
+
+    <section class="set-section card" data-sec="password">
+      <button class="btn btn-ghost set-back" type="button" data-back><svg class="i sm"><use href="#i-chev-left"/></svg>Einstellungen</button>
+      <h2 class="card-title"><svg class="i"><use href="#i-lock"/></svg>Passwort ändern</h2>
+      <form id="pwForm" novalidate>
+        <div class="field"><label for="pwCur">Aktuelles Passwort</label><div class="pw-wrap"><input class="input" id="pwCur" type="password" autocomplete="current-password"><button class="icon-btn" type="button" data-pw-toggle="pwCur" aria-label="Passwort anzeigen"><svg class="i sm"><use href="#i-eye"/></svg></button></div></div>
+        <div class="field"><label for="pwNew">Neues Passwort</label><div class="pw-wrap"><input class="input" id="pwNew" type="password" autocomplete="new-password"><button class="icon-btn" type="button" data-pw-toggle="pwNew" aria-label="Passwort anzeigen"><svg class="i sm"><use href="#i-eye"/></svg></button></div>
+          <div class="strength"><div id="pwStrength"></div></div><span class="form-hint" id="pwStrengthLabel">Mindestens 6 Zeichen</span></div>
+        <div class="field"><label for="pwRep">Neues Passwort bestätigen</label><div class="pw-wrap"><input class="input" id="pwRep" type="password" autocomplete="new-password"><button class="icon-btn" type="button" data-pw-toggle="pwRep" aria-label="Passwort anzeigen"><svg class="i sm"><use href="#i-eye"/></svg></button></div>
+          <span class="form-hint" id="pwMatch"></span></div>
+        <p class="form-error" id="pwErr"></p>
+        <button class="btn btn-primary" type="submit">Passwort ändern</button>
+      </form>
+    </section>
+
+    <section class="set-section card" data-sec="account">
+      <button class="btn btn-ghost set-back" type="button" data-back><svg class="i sm"><use href="#i-chev-left"/></svg>Einstellungen</button>
+      <h2 class="card-title"><svg class="i"><use href="#i-info"/></svg>Konto-Informationen</h2>
+      <dl class="kv" id="accountInfo"><div class="skeleton sk-line"></div><div class="skeleton sk-line"></div></dl>
+    </section>
+
+    <section class="set-section card" data-sec="appearance">
+      <button class="btn btn-ghost set-back" type="button" data-back><svg class="i sm"><use href="#i-chev-left"/></svg>Einstellungen</button>
+      <h2 class="card-title"><svg class="i"><use href="#i-sun"/></svg>Darstellung</h2>
+      <span class="label" style="margin-bottom:6px">Modus</span>
+      <div class="segmented" id="themeSeg"><button type="button" data-theme="system">System</button><button type="button" data-theme="light">Hell</button><button type="button" data-theme="dark">Dunkel</button></div>
+      <span class="label" style="margin:16px 0 6px">Farbprofil</span>
+      <div class="accent-picks" id="accentPick">
+        <button type="button" class="accent-pick" data-accent="rose"><span class="accent-swatch" style="background:linear-gradient(135deg,#ff2d55,#ff7a3d)"></span>Rot-Violett</button>
+        <button type="button" class="accent-pick" data-accent="ocean"><span class="accent-swatch" style="background:linear-gradient(135deg,#00c389,#0a84ff)"></span>Grün-Blau</button>
+      </div>
+      <p class="form-hint" style="margin-top:10px">Wird nur auf diesem Gerät gespeichert.</p>
+    </section>
+
+    <section class="set-section card mobile-feature" data-sec="notifications">
+      <button class="btn btn-ghost set-back" type="button" data-back><svg class="i sm"><use href="#i-chev-left"/></svg>Einstellungen</button>
+      <h2 class="card-title"><svg class="i"><use href="#i-bell"/></svg>Benachrichtigungen <span class="badge" id="notifStatus">–</span></h2>
+      <p class="muted">Erhalte Hinweise direkt auf deinem Gerät. Die Erlaubnis kannst du jederzeit in den Systemeinstellungen widerrufen.</p>
+      <div class="row wrap" style="margin-top:12px">
+        <button class="btn btn-primary btn-sm" type="button" id="notifEnable">Benachrichtigungen aktivieren</button>
+        <button class="btn btn-sm" type="button" id="notifTest">Test-Benachrichtigung senden</button>
+      </div>
+      <p class="form-hint" style="margin-top:10px">iPhone/iPad: nur verfügbar, wenn {{ APP_NAME }} über „Zum Home-Bildschirm“ installiert ist (ab iOS 16.4).</p>
+    </section>
+
+    <section class="set-section card" data-sec="data">
+      <button class="btn btn-ghost set-back" type="button" data-back><svg class="i sm"><use href="#i-chev-left"/></svg>Einstellungen</button>
+      <h2 class="card-title"><svg class="i"><use href="#i-shield"/></svg>Datenschutz &amp; Daten</h2>
+      <p class="muted">{{ APP_NAME }} setzt nur ein technisch notwendiges Sitzungs-Cookie und speichert Komfort-Einstellungen lokal auf deinem Gerät. Kein Tracking, keine Werbung, keine externen Schriftarten.</p>
+      <div class="row wrap" style="margin-top:12px">
+        <a class="btn btn-tinted btn-sm" href="/api/auth/export" download><svg class="i sm"><use href="#i-download"/></svg>Meine Daten exportieren</a>
+        <a class="btn btn-sm" href="/privacy">Datenschutzerklärung</a>
+        <a class="btn btn-sm" href="/imprint">Impressum</a>
+      </div>
+    </section>
+
+    <section class="set-section card" data-sec="help">
+      <button class="btn btn-ghost set-back" type="button" data-back><svg class="i sm"><use href="#i-chev-left"/></svg>Einstellungen</button>
+      <h2 class="card-title"><svg class="i"><use href="#i-help"/></svg>Hilfe</h2>
+      <dl class="kv"><div><dt>App-Version</dt><dd>{{ APP_VERSION }}</dd></div><div><dt>Plattform</dt><dd id="platformInfo">–</dd></div></dl>
+      <details class="faq"><summary>Wie lege ich ein Training an?</summary><p>Tippe auf das Plus in der Navigation und wähle „Neues Training“ – oder tippe im Kalender auf einen Tag. Danach fügst du Übungen hinzu, ordnest sie den Blöcken Aufwärmen, Hauptteil und Abschluss zu und vergibst eine Dauer.</p></details>
+      <details class="faq"><summary>Wie installiere ich {{ APP_NAME }} auf dem iPhone?</summary><p>Öffne die Seite in Safari, tippe auf „Teilen“ und dann auf „Zum Home-Bildschirm“. {{ APP_NAME }} startet danach wie eine App im Vollbild. Unter Android/Chrome erscheint „App installieren“ im Menü.</p></details>
+      <details class="faq"><summary>Wie sicher sind meine Daten?</summary><p>Passwörter werden nur als gesalzener PBKDF2-SHA256-Hash gespeichert. Die Verbindung ist verschlüsselt (HTTPS), es gibt kein Tracking. Du kannst deine Daten jederzeit exportieren und dein Konto samt aller Daten und Bilder selbst löschen.</p></details>
+    </section>
+
+    <section class="set-section card" data-sec="feedback">
+      <button class="btn btn-ghost set-back" type="button" data-back><svg class="i sm"><use href="#i-chev-left"/></svg>Einstellungen</button>
+      <h2 class="card-title"><svg class="i"><use href="#i-message"/></svg>Feedback</h2>
+      <p class="muted">Ideen, Fehler oder Wünsche? Wir freuen uns über deine Rückmeldung.</p>
+      {% set fb = FEEDBACK_URL or ('mailto:' ~ OPERATOR.email if OPERATOR.email else '') %}
+      {% if fb %}<a class="btn btn-tinted btn-sm" style="margin-top:12px" href="{{ fb }}" rel="noopener" target="_blank"><svg class="i sm"><use href="#i-mail"/></svg>Feedback senden</a>
+      {% else %}<p class="form-hint" style="margin-top:10px">[Betreiber: Feedback-Ziel über FEEDBACK_URL oder OPERATOR_EMAIL festlegen]</p>{% endif %}
+    </section>
+
+    <section class="set-section card" data-sec="roadmap">
+      <button class="btn btn-ghost set-back" type="button" data-back><svg class="i sm"><use href="#i-chev-left"/></svg>Einstellungen</button>
+      <h2 class="card-title"><svg class="i"><use href="#i-sparkle"/></svg>Roadmap <span class="badge">v{{ APP_VERSION }}</span></h2>
+      <div class="roadmap">
+        <h3><span class="dot" style="--c:var(--warning)"></span>In Bearbeitung</h3>
+        <ul><li>Feinschliff des Kalenders auf dem Smartphone</li></ul>
+        <h3><span class="dot" style="--c:var(--info)"></span>Nächste Updates</h3>
+        <ul><li>Trainingsvorlagen zum Wiederverwenden</li><li>Saison- und Wochenplanung</li><li>Übersicht und Verwaltung geteilter Links</li><li>Noch schneller und flüssiger</li><li>Eventuell Pro-Funktionen</li></ul>
+        <h3><span class="dot" style="--c:var(--success)"></span>Erledigt</h3>
+        <ul><li>Übungsdatenbank mit 46 Übungen in 7 Sportarten, Favoriten und Teilen per Link</li><li>Trainings mit Blöcken, Dauer, Drag &amp; Drop, PDF und Live-Modus</li><li>Kalender mit Monats- und Wochenansicht sowie Terminen</li><li>Teams, Spieler, Einladecodes und Anwesenheit</li><li>Dashboard mit Wochenziel und Statistiken</li><li>Installierbar als App, offline-fähig</li></ul>
+      </div>
+    </section>
+
+    <section class="set-section card danger-card" data-sec="danger">
+      <button class="btn btn-ghost set-back" type="button" data-back><svg class="i sm"><use href="#i-chev-left"/></svg>Einstellungen</button>
+      <h2 class="card-title" style="color:var(--danger)"><svg class="i"><use href="#i-alert"/></svg>Gefahrenzone</h2>
+      <p class="muted">Dein Konto wird dauerhaft gelöscht – mit allen Trainings, Übungen, Teams, Spielern, Terminen, Favoriten und Bildern. Das kann nicht rückgängig gemacht werden.</p>
+      <form id="deleteForm" novalidate style="margin-top:12px">
+        <div class="field"><label for="delPass">Zur Bestätigung dein Passwort</label><input class="input" id="delPass" type="password" autocomplete="current-password"></div>
+        <p class="form-error" id="delErr"></p>
+        <button class="btn btn-danger solid" type="submit"><svg class="i sm"><use href="#i-trash"/></svg>Konto endgültig löschen</button>
+      </form>
+    </section>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}<script src="/static/js/settings.js?v={{ APP_VERSION }}"></script>{% endblock %}

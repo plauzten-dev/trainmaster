@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="de">
+<head>
+{% include '_head.html' %}
+<title>{% block title %}{% endblock %} · {{ APP_NAME }}</title>
+<link rel="stylesheet" href="/static/css/pages.css?v={{ APP_VERSION }}">
+</head>
+{% set u = current_user %}
+{% set avatar_url = (u.avatar_path if u.avatar_path.startswith('http') else '/uploads/' ~ u.avatar_path) if u.avatar_path else '' %}
+<body data-role="{{ u.role }}" data-page="{{ active }}" data-username="{{ u.username }}" data-avatar="{{ avatar_url }}">
+{% include '_icons.html' %}
+<script type="application/json" id="app-config">{{ FRONTEND_CONFIG|tojson }}</script>
+<div class="ambient" aria-hidden="true"></div>
+<div class="app-shell">
+  <aside class="sidebar glass" aria-label="Hauptnavigation">
+    <a class="brand" href="/dashboard"><img class="brand-logo" src="/static/icons/logo.svg" alt="">{{ APP_NAME }}</a>
+    <a class="side-link {% if active == 'dashboard' %}active{% endif %}" href="/dashboard"><svg class="i"><use href="#i-home"/></svg>Übersicht</a>
+    <a class="side-link {% if active == 'calendar' %}active{% endif %}" href="/calendar"><svg class="i"><use href="#i-calendar"/></svg>Kalender</a>
+    <a class="side-link {% if active == 'exercises' %}active{% endif %}" href="/exercises"><svg class="i"><use href="#i-cones"/></svg>Übungen</a>
+    <a class="side-link {% if active == 'trainings' %}active{% endif %}" href="/my-trainings"><svg class="i"><use href="#i-clipboard"/></svg>Trainings</a>
+    {% if u.role == 'trainer' %}<a class="side-link {% if active == 'team' %}active{% endif %}" href="/players"><svg class="i"><use href="#i-users"/></svg>Mein Team</a>{% endif %}
+    <button class="btn btn-primary side-new" type="button" data-quick-create><svg class="i sm"><use href="#i-plus"/></svg>Neu erstellen</button>
+    <div class="side-spacer"></div>
+    <a class="side-acc" href="/calendar" data-next-up-link>
+      <span class="acc-art" data-next-up-art style="--c:var(--accent);background:var(--accent-grad)"><svg class="i"><use href="#i-calendar"/></svg></span>
+      <span class="acc-text"><span class="acc-title" data-next-up-title>Als Nächstes</span><span class="acc-sub" data-next-up-sub>Wird geladen …</span></span>
+    </a>
+    <div class="side-sep"></div>
+    <a class="side-user {% if active == 'settings' %}active{% endif %}" href="/settings">
+      {% if avatar_url %}<span class="avatar sm"><img src="{{ avatar_url }}" alt=""></span>{% else %}<span class="avatar sm">{{ u.username[:1]|upper }}</span>{% endif %}
+      <span><span class="side-user-name">{{ u.username }}</span><br><span class="side-user-role">{{ FRONTEND_CONFIG.role_labels[u.role] }} · Einstellungen</span></span>
+    </a>
+  </aside>
+  <div class="app-main">
+    <div class="topbar" id="topbar"><div class="topbar-title" id="topbarTitle"></div></div>
+    <main class="scroller" id="scroller">
+      <div class="page">{% block content %}{% endblock %}</div>
+    </main>
+    <nav class="dock" id="dock" aria-label="Hauptnavigation">
+      <div class="dock-inner">
+        <a class="accessory glass" href="/calendar" data-next-up-link aria-label="Als Nächstes">
+          <span class="acc-art" data-next-up-art style="background:var(--accent-grad)"><svg class="i"><use href="#i-calendar"/></svg></span>
+          <span class="acc-text"><span class="acc-title" data-next-up-title>Als Nächstes</span><span class="acc-sub" data-next-up-sub>Wird geladen …</span></span>
+          <span class="acc-btn" aria-hidden="true"><svg class="i"><use href="#i-chev-right"/></svg></span>
+        </a>
+        <div class="tabbar glass" id="tabbar" role="tablist">
+          <span class="tab-lens" id="tabLens"></span>
+          <a class="tab {% if active == 'dashboard' %}active{% endif %}" href="/dashboard" role="tab"><svg class="i"><use href="#i-home"/></svg><span>Übersicht</span></a>
+          <a class="tab {% if active == 'calendar' %}active{% endif %}" href="/calendar" role="tab"><svg class="i"><use href="#i-calendar"/></svg><span>Kalender</span></a>
+          <a class="tab {% if active == 'exercises' %}active{% endif %}" href="/exercises" role="tab"><svg class="i"><use href="#i-cones"/></svg><span>Übungen</span></a>
+          <a class="tab {% if active == 'trainings' %}active{% endif %}" href="/my-trainings" role="tab"><svg class="i"><use href="#i-clipboard"/></svg><span>Trainings</span></a>
+          {% if u.role == 'trainer' %}<a class="tab {% if active == 'team' %}active{% endif %}" href="/players" role="tab"><svg class="i"><use href="#i-users"/></svg><span>Team</span></a>{% endif %}
+        </div>
+        <button class="dock-fab glass" type="button" data-quick-create aria-label="Neu erstellen"><svg class="i"><use href="#i-plus"/></svg></button>
+      </div>
+    </nav>
+  </div>
+</div>
+<div class="toast-host" id="toastHost" aria-live="polite"></div>
+<script src="/static/js/core.js?v={{ APP_VERSION }}"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

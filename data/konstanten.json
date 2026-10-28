@@ -1,0 +1,100 @@
+{
+  "_hinweis": "Alle Aufzählungen/Grenzwerte des Vorbilds an EINER Stelle. Im neuen Projekt als Backend-Konstanten UND per /api/config (oder Template-Variablen) ans Frontend geben – nicht doppelt hartkodieren.",
+
+  "roles": ["trainer", "player", "private"],
+  "role_labels": { "trainer": "Trainer", "player": "Spieler", "private": "Privat" },
+
+  "sports": ["Fußball", "Tennis", "Floorball", "Basketball", "Volleyball", "Gym", "Allgemein"],
+
+  "difficulties": ["Anfänger", "Fortgeschritten", "Profi"],
+
+  "field_sizes": ["Klein (10x10m)", "Mittel (20x30m)", "Groß (40x30m)", "Groß (Vollfeld)"],
+
+  "core_competencies": {
+    "Fußball":    ["Passspiel", "Torschuss", "Dribbling", "Zweikampf", "Torwartspiel", "Spielaufbau", "Pressing", "Standardsituationen", "Ausdauer", "Koordination", "Spielintelligenz"],
+    "Tennis":     ["Schlagtechnik", "Aufschlag", "Netzspiel", "Grundlinienspiel", "Return", "Taktik", "Kondition"],
+    "Floorball":  ["Passspiel", "Torschuss", "Stickhandling", "Zweikampf", "Torhüterspiel", "Spielaufbau", "Pressing", "Kondition"],
+    "Basketball": ["Dribbling", "Korbwurf", "Taktik", "Spielform", "Schnellangriff", "Verteidigung", "Kondition"],
+    "Volleyball": ["Annahme", "Zuspiel", "Aufschlag", "Block", "Angriff", "Spielform", "Kondition"],
+    "Gym":        ["Kraft", "Ausdauer", "Rumpfkraft", "Explosivkraft", "Koordination", "Stabilisation", "Abschluss"],
+    "Allgemein":  ["Aufwärmen", "Dehnen", "Koordination", "Stabilisation", "Ausdauer", "Abschluss"]
+  },
+
+  "player_positions": {
+    "Fußball":    ["Torwart", "Innenverteidiger", "Außenverteidiger", "Defensives MF", "Mittelfeld", "Offensives MF", "Außenstürmer", "Stürmer"],
+    "Basketball": ["Point Guard", "Shooting Guard", "Small Forward", "Power Forward", "Center"],
+    "Volleyball": ["Libero", "Außenangreifer", "Mittelangreifer", "Zuspieler", "Diagonal"],
+    "Tennis":     ["Einzel", "Doppel", "Universal"],
+    "Floorball":  ["Torwart", "Verteidiger", "Stürmer"],
+    "Gym":        ["Universal"],
+    "Allgemein":  ["Universal"]
+  },
+  "player_position_default": "Universal",
+
+  "player_status": ["fit", "krank", "verletzt"],
+  "player_status_labels": { "fit": "Fit", "krank": "Krank", "verletzt": "Verletzt" },
+
+  "training_blocks": ["Aufwärmen", "Hauptteil", "Abschluss"],
+  "training_block_default": "Hauptteil",
+
+  "event_types": ["spiel", "turnier", "sonstiges"],
+  "event_type_labels": { "spiel": "Spiel", "turnier": "Turnier", "sonstiges": "Termin" },
+  "event_type_default": "spiel",
+
+  "attendance_percent_thresholds": { "good_min": 75, "ok_min": 50, "_note": "gut >= 75 %, mittel >= 50 %, schlecht darunter (Ampel in der Anwesenheits-Übersicht)" },
+
+  "limits": {
+    "password_min_length": 6,
+    "weekly_goal_min": 1,
+    "weekly_goal_max": 14,
+    "weekly_goal_default": 4,
+    "jersey_number_min": 1,
+    "jersey_number_max": 99,
+    "exercise_field_players_max": 25,
+    "exercise_goalkeepers_max": 4,
+    "exercise_filter_field_players_max": 20,
+    "exercise_duration_in_training_min": 0,
+    "exercise_duration_in_training_max": 240,
+    "invite_code_length": 8,
+    "invite_code_alphabet": "0-9A-F (secrets.token_hex(4).upper())",
+    "verification_ttl_hours": 24,
+    "upload_max_bytes": 16777216,
+    "upload_allowed_extensions": ["png", "jpg", "jpeg", "gif", "webp", "heic", "heif"],
+    "dashboard_upcoming_days": 4,
+    "dashboard_suggested_exercises": 3,
+    "dashboard_suggested_sport": "Allgemein",
+    "statistics_months": 6,
+    "statistics_top_exercises": 5,
+    "notes_autosave_debounce_ms": 1200,
+    "exercise_search_debounce_ms": 350
+  },
+
+  "greeting_by_hour": [
+    { "from": 5,  "to": 12, "text": "Guten Morgen" },
+    { "from": 12, "to": 14, "text": "Guten Mittag" },
+    { "from": 14, "to": 19, "text": "Guten Nachmittag" },
+    { "from": 19, "to": 5,  "text": "Guten Abend" }
+  ],
+
+  "relative_day_labels": ["Heute", "Morgen", "Übermorgen"],
+
+  "weekday_short_de": ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"],
+  "months_de": ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"],
+
+  "localstorage_keys": {
+    "exercises_sport": "zuletzt gewählte Sportart in der Übungsliste ('' = alle, 'favorites' = Favoritenansicht)",
+    "calView": "'month' | 'week' im Kalender",
+    "att_team_<TRAINING_ID>": "zuletzt gewähltes Team bei der Anwesenheit dieses Trainings"
+  },
+
+  "sessionstorage_keys": {
+    "splashShown": "Splash nur einmal pro Sitzung im Standalone-Modus"
+  },
+
+  "query_params": {
+    "/my-trainings?new=1": "öffnet direkt den Dialog 'Neues Training'",
+    "/calendar?new=1": "öffnet 'Neues Training'",
+    "/calendar?new=event": "öffnet 'Neuer Termin' (nur Trainer)",
+    "/exercises?new=1": "öffnet 'Neue Übung'"
+  }
+}

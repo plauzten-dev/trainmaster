@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="de">
+<head>
+{% include '_head.html' %}
+<title>{{ code }} · {{ APP_NAME }}</title>
+<link rel="stylesheet" href="/static/css/pages.css?v={{ APP_VERSION }}">
+</head>
+<body class="auth-body">
+{% include '_icons.html' %}
+<div class="ambient" aria-hidden="true"></div>
+<main class="auth-wrap">
+  <div class="auth-card glass">
+    <div class="empty">
+      <div class="empty-ic"><svg class="i"><use href="#i-alert"/></svg></div>
+      <h3>{{ message }}</h3>
+      <p>Fehlercode {{ code }}</p>
+      <a class="btn btn-primary" href="/">Zur Startseite</a>
+    </div>
+  </div>
+</main>
+</body>
+</html>

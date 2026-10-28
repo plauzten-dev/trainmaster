@@ -1,0 +1,15 @@
+{% extends '_public_base.html' %}
+{% macro ph(value, label) %}{% if value %}{{ value }}{% else %}<span class="placeholder">[{{ label }}]</span>{% endif %}{% endmacro %}
+{% block title %}Impressum{% endblock %}
+{% block body %}
+<h1>Impressum</h1>
+<p>Angaben gemäß § 5 DDG (Deutschland) bzw. § 5 ECG und § 25 MedienG (Österreich)</p>
+<h2>Betreiber</h2>
+<p>{{ ph(OPERATOR.name, 'Vor- und Nachname bzw. Firma') }}<br>{{ ph(OPERATOR.address, 'Straße, PLZ, Ort, Land') }}</p>
+<h2>Kontakt</h2>
+<p>E-Mail: {{ ph(OPERATOR.email, 'Kontakt-E-Mail') }}{% if OPERATOR.phone %}<br>Telefon: {{ OPERATOR.phone }}{% endif %}</p>
+<h2>Weitere Angaben</h2>
+<p><span class="placeholder">[falls zutreffend: Unternehmensgegenstand, Firmenbuch-/Handelsregisternummer, UID-/USt-IdNr., Aufsichtsbehörde, Kammer]</span></p>
+<h2>Haftung für Inhalte</h2>
+<p>Die Übungen und Inhalte dieser App wurden mit Sorgfalt erstellt. Für Verletzungen bei der Durchführung von Übungen übernehmen wir keine Haftung – bitte achte auf eine altersgerechte und sichere Durchführung. Inhalte, die Nutzer selbst anlegen, liegen in deren Verantwortung.</p>
+{% endblock %}

@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>{{ t.title }} – {{ date_label }} · {{ APP_NAME }}</title>
+<link rel="icon" href="/static/icons/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/static/css/print.css?v={{ APP_VERSION }}">
+</head>
+{% set keys = {'Fußball':'fussball','Tennis':'tennis','Floorball':'floorball','Basketball':'basketball','Volleyball':'volleyball','Gym':'gym','Allgemein':'allgemein'} %}
+<body>
+{% include '_icons.html' %}
+<div class="toolbar">
+  <a class="tb-btn" href="/training/{{ t.id }}" id="backBtn"><svg class="i"><use href="#i-chev-left"/></svg>Zurück</a>
+  <button class="tb-btn primary" type="button" id="printBtn"><svg class="i"><use href="#i-printer"/></svg>PDF drucken/speichern</button>
+</div>
+<main class="sheet">
+  <header class="doc-head">
+    <div>
+      <div class="brand"><img src="/static/icons/logo.svg" alt="">{{ APP_NAME }}</div>
+      <h1>{{ t.title }}</h1>
+      <p class="sub">{{ date_label }}{% if t.time %} · {{ t.time }} Uhr{% endif %} · {{ sport }}</p>
+    </div>
+    <div class="summary">
+      <div><b>{{ exercises|length }}</b><span>Übung{{ '' if exercises|length == 1 else 'en' }}</span></div>
+      <div><b>{{ total }}</b><span>Minuten</span></div>
+    </div>
+  </header>
+
+  {% if t.notes %}
+  <section class="notes"><h2>Notizen</h2><p>{{ t.notes }}</p></section>
+  {% endif %}
+
+  <p class="count">{{ exercises|length }} Übung{{ '' if exercises|length == 1 else 'en' }}</p>
+  {% set ns = namespace(block='') %}
+  {% for ex in exercises %}
+  {% if ex.block != ns.block %}{% set ns.block = ex.block %}<h2 class="block-title">{{ ex.block }}</h2>{% endif %}
+  {% set sk = keys.get(ex.sport, 'allgemein') %}
+  <article class="ex">
+    <div class="ex-num">{{ loop.index }}</div>
+    <div class="ex-media s-{{ sk }}">
+      {% if ex.image_path %}<img src="{{ ex.image_path if ex.image_path.startswith('http') else '/uploads/' ~ ex.image_path }}" alt="">
+      {% else %}<svg class="motif" viewBox="0 0 24 24"><use href="#s-{{ sk }}"/></svg>{% endif %}
+    </div>
+    <div class="ex-body">
+      <div class="ex-top"><h3>{{ ex.title }}</h3><span class="pill block">{{ ex.block }}{% if ex.duration is not none %} · {{ ex.duration }} Min.{% endif %}</span></div>
+      <div class="chips">
+        <span class="chip">{{ ex.sport }}</span><span class="chip">{{ ex.field_players }} Feldspieler</span><span class="chip">{{ ex.goalkeepers }} Torhüter</span>
+        <span class="chip">{{ ex.core_competency }}</span><span class="chip">{{ ex.difficulty }}</span><span class="chip">{{ ex.field_size }}</span>
+      </div>
+      <p class="desc">{{ ex.description }}</p>
+    </div>
+  </article>
+  {% else %}
+  <p class="empty">Dieses Training enthält noch keine Übungen.</p>
+  {% endfor %}
+  <footer class="doc-foot">Erstellt mit {{ APP_NAME }}</footer>
+</main>
+<script src="/static/js/pdf.js?v={{ APP_VERSION }}"></script>
+</body>
+</html>

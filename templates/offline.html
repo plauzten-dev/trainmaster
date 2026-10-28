@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="de">
+<head>
+{% include '_head.html' %}
+<title>Offline · {{ APP_NAME }}</title>
+<link rel="stylesheet" href="/static/css/pages.css?v={{ APP_VERSION }}">
+</head>
+<body class="auth-body">
+{% include '_icons.html' %}
+<div class="ambient" aria-hidden="true"></div>
+<main class="auth-wrap">
+  <div class="auth-card glass">
+    <div class="empty">
+      <div class="empty-ic"><svg class="i"><use href="#i-alert"/></svg></div>
+      <h3>Du bist offline</h3>
+      <p>{{ APP_NAME }} braucht eine Internetverbindung, um deine Daten zu laden. Prüfe deine Verbindung und versuche es erneut.</p>
+      <button class="btn btn-primary" type="button" id="retryBtn"><svg class="i sm"><use href="#i-refresh"/></svg>Erneut versuchen</button>
+    </div>
+  </div>
+</main>
+<script src="/static/js/offline.js?v={{ APP_VERSION }}"></script>
+</body>
+</html>

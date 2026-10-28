@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="de">
+<head>
+{% include '_head.html' %}
+<title>Anmelden · {{ APP_NAME }}</title>
+<link rel="stylesheet" href="/static/css/pages.css?v={{ APP_VERSION }}">
+</head>
+<body class="auth-body" data-smtp="{{ '1' if SMTP_ENABLED else '0' }}">
+{% include '_icons.html' %}
+<script type="application/json" id="app-config">{{ FRONTEND_CONFIG|tojson }}</script>
+<div class="ambient" aria-hidden="true"></div>
+<main class="auth-wrap">
+  <div class="auth-card glass">
+    <div class="auth-brand">
+      <img src="/static/icons/logo.svg" alt="" class="auth-logo">
+      <h1>{{ APP_NAME }}</h1>
+      <p class="muted">Training planen. Team führen. Fortschritt sehen.</p>
+    </div>
+    <div class="segmented auth-seg" role="tablist">
+      <button type="button" class="active" data-mode="login" role="tab">Anmelden</button>
+      <button type="button" data-mode="register" role="tab">Registrieren</button>
+    </div>
+
+    <form id="loginForm" class="auth-form" novalidate>
+      <div class="field"><label for="liUser">Benutzername oder E-Mail</label>
+        <input class="input" id="liUser" autocomplete="username" autocapitalize="off" spellcheck="false" required></div>
+      <div class="field"><label for="liPass">Passwort</label>
+        <div class="pw-wrap"><input class="input" id="liPass" type="password" autocomplete="current-password" required>
+        <button class="icon-btn" type="button" data-pw-toggle="liPass" aria-label="Passwort anzeigen"><svg class="i sm"><use href="#i-eye"/></svg></button></div></div>
+      <p class="form-error" id="liErr"></p>
+      <button class="btn btn-primary btn-block" type="submit">Anmelden</button>
+      <div class="hidden auth-resend" id="resendBox">
+        <p class="muted">Keine E-Mail erhalten?</p>
+        <button class="btn btn-tinted btn-sm" type="button" id="resendBtn"><svg class="i sm"><use href="#i-mail"/></svg>Bestätigung erneut senden</button>
+      </div>
+    </form>
+
+    <form id="regForm" class="auth-form hidden" novalidate>
+      <div class="wiz-progress" id="wizProgress" aria-hidden="true"></div>
+      <section class="wiz-step" data-step="role">
+        <h2 class="wiz-title">Wer bist du?</h2>
+        <div class="role-grid">
+          <button type="button" class="pick role-pick active" data-role="trainer" style="--c:var(--accent)"><span class="pick-ic"><svg class="i"><use href="#i-whistle"/></svg></span><b>Trainer</b><small>Teams, Termine &amp; Anwesenheit</small></button>
+          <button type="button" class="pick role-pick" data-role="player" style="--c:var(--s-volleyball)"><span class="pick-ic"><svg class="i"><use href="#i-user"/></svg></span><b>Spieler</b><small>Mit Einladecode deines Trainers</small></button>
+          <button type="button" class="pick role-pick" data-role="private" style="--c:var(--s-gym)"><span class="pick-ic"><svg class="i"><use href="#i-target"/></svg></span><b>Privat</b><small>Eigenes Training ohne Team</small></button>
+        </div>
+      </section>
+      <section class="wiz-step" data-step="invite">
+        <h2 class="wiz-title">Einladecode</h2>
+        <div class="field"><label for="reInvite">Code von deinem Trainer (8 Zeichen)</label>
+          <input class="input mono" id="reInvite" maxlength="8" autocapitalize="characters" autocomplete="off" spellcheck="false" placeholder="z. B. 3FA9C21B"></div>
+      </section>
+      <section class="wiz-step" data-step="username">
+        <h2 class="wiz-title">Benutzername</h2>
+        <div class="field"><label for="reUser">Benutzername</label>
+          <input class="input" id="reUser" maxlength="40" autocomplete="username" autocapitalize="off" spellcheck="false"></div>
+      </section>
+      <section class="wiz-step" data-step="email">
+        <h2 class="wiz-title">E-Mail-Adresse</h2>
+        <div class="field"><label for="reMail">E-Mail</label>
+          <input class="input" id="reMail" type="email" maxlength="200" autocomplete="email" autocapitalize="off" spellcheck="false"></div>
+      </section>
+      <section class="wiz-step" data-step="password">
+        <h2 class="wiz-title">Passwort</h2>
+        <div class="field"><label for="rePass">Passwort (mind. 6 Zeichen)</label>
+          <div class="pw-wrap"><input class="input" id="rePass" type="password" autocomplete="new-password">
+          <button class="icon-btn" type="button" data-pw-toggle="rePass" aria-label="Passwort anzeigen"><svg class="i sm"><use href="#i-eye"/></svg></button></div>
+          <div class="strength"><div id="reStrength"></div></div></div>
+      </section>
+      <section class="wiz-step" data-step="privacy">
+        <h2 class="wiz-title">Datenschutz</h2>
+        <label class="check"><input type="checkbox" id="rePrivacy"><span>Ich habe die <a href="/privacy" target="_blank" rel="noopener">Datenschutzerklärung</a> gelesen und akzeptiere sie.</span></label>
+      </section>
+      <p class="form-error" id="reErr"></p>
+      <div class="wiz-nav">
+        <button class="btn" type="button" id="wizBack">Zurück</button>
+        <button class="btn btn-primary" type="button" id="wizNext">Weiter</button>
+        <button class="btn btn-primary" type="submit" id="regSubmit">Konto erstellen</button>
+      </div>
+    </form>
+  </div>
+  <footer class="auth-foot"><a href="/privacy">Datenschutz</a><span>·</span><a href="/imprint">Impressum</a><span>·</span><span class="faint">Version {{ APP_VERSION }}</span></footer>
+</main>
+<div class="toast-host" id="toastHost" aria-live="polite"></div>
+<script src="/static/js/core.js?v={{ APP_VERSION }}"></script>
+<script src="/static/js/auth.js?v={{ APP_VERSION }}"></script>
+</body>
+</html>
