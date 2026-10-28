@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 {% block title %}Einstellungen{% endblock %}
 {% block content %}
-<header class="page-head"><div><h1 class="large-title">Einstellungen</h1></div></header>
+<header class="page-head"><div><h1 class="large-title">Einstellungen</h1></div>
+  <div class="head-actions"><button class="btn btn-glass btn-sm" type="button" data-logout><svg class="i sm"><use href="#i-logout"/></svg>Abmelden</button></div>
+</header>
 <div class="settings" id="settings">
   <nav class="set-menu" id="setMenu" aria-label="Einstellungen">
     <button class="set-profile-card card" type="button" data-open="profile">

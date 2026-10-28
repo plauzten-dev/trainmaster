@@ -162,14 +162,15 @@
       try {
         await api('/api/auth/account', { method: 'DELETE', body: { password: pw } });
         storageDel('sessionStorage', 'splashShown');
-        location.href = '/login';
+        location.href = '/';
       } catch (err) { errEl.textContent = err.message; }
     });
   });
 
   /* Abmelden */
-  $('[data-logout]', root).addEventListener('click', (e) => withBusy(e.currentTarget, async () => {
+  $$('[data-logout]').forEach((btn) => btn.addEventListener('click', () => withBusy(btn, async () => {
     try { await api('/api/auth/logout', { method: 'POST' }); } catch (err) { /* trotzdem weiter */ }
-    location.href = '/login';
-  }));
+    storageDel('sessionStorage', 'splashShown');
+    location.href = '/';  // zur Landingpage
+  })));
 })();
