@@ -102,6 +102,11 @@ dup = t.post('/api/trainings/%d/duplicate' % tid, json={'date': '2026-11-04', 't
 dd = t.get('/api/trainings/%d' % dup['id']).get_json()
 check(len(dd['exercises']) == 4 and dd['notes'] == '' and dd['time'] == '18:00' and dd['title'] == 'Kopie', 'Duplizieren korrekt')
 check(t.get('/training/%d/pdf' % tid).status_code == 200 and 'Abschluss' in t.get('/training/%d/pdf' % tid).get_data(as_text=True), 'PDF mit Block')
+pf = t.get('/training/%d/pdf/file' % tid); check(pf.status_code == 200 and pf.mimetype == 'application/pdf' and pf.data.startswith(b'%PDF') and pf.data.rstrip().endswith(b'%%EOF'), 'PDF-Datei')
+check(t.get('/api/trainings/%d' % tid).get_json()['team_id'] is None, 'Neues Training ohne Team')
+check(t.put('/api/trainings/%d' % tid, json={'team_id': team['id']}, headers=H).status_code == 200 and t.get('/api/trainings/%d' % tid).get_json()['team_name'] == 'U17', 'Team zuordnen')
+check(t.put('/api/trainings/%d' % tid, json={'team_id': 99999}, headers=H).status_code == 404, 'Fremdes Team -> 404')
+check(t.put('/api/trainings/%d' % tid, json={'notes': 'Notiz'}, headers=H).status_code == 200 and t.get('/api/trainings/%d' % tid).get_json()['team_id'] == team['id'], 'Team bleibt ohne team_id im Body')
 
 # Spieler-Sicht
 st = s.get('/api/trainings').get_json(); check(any(x['id'] == tid and not x['owned_by_me'] for x in st), 'Spieler sieht Trainer-Training')
@@ -114,6 +119,7 @@ for url, body in (('/api/events', {'title': 'x', 'date': '2026-10-30', 'type': '
 check(v.get('/players').status_code == 302, 'Privat /players -> Redirect')
 check(v.get('/api/trainings/%d' % tid).status_code == 404, 'Privat sieht fremdes Training nicht')
 own = s.post('/api/trainings', json={'title': 'Eigen', 'date': '2026-10-29'}, headers=H); check(own.status_code == 201, 'Spieler eigenes Training')
+check(s.put('/api/trainings/%d' % own.get_json()['id'], json={'team_id': team['id']}, headers=H).status_code == 403, 'Spieler darf kein Team zuordnen')
 
 # Termine
 e1 = t.post('/api/events', json={'title': 'Spiel', 'date': '2026-10-28', 'type': 'spiel', 'team_id': team['id']}, headers=H).get_json()

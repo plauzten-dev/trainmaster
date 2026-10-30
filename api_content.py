@@ -3,7 +3,7 @@ import os
 import shutil
 import uuid
 
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, g, jsonify, request
 
 from config import (APP_NAME, CLOUDINARY_ENABLED, CORE_COMPETENCIES, DIFFICULTIES, EVENT_TYPES, FIELD_SIZES, LIMITS,
                     SPORTS, TRAINING_BLOCKS, UPLOAD_DIR)
@@ -327,10 +327,27 @@ def get_training_detail(training_id):
     d['exercises'] = _training_exercises(training_id)
     d['owned_by_me'] = t['user_id'] == uid()
     d['sport'] = training_sports([training_id])[training_id]
+    team = get_db().execute('SELECT name FROM teams WHERE id = ?', (t['team_id'],)).fetchone() if t['team_id'] else None
+    d['team_name'] = team['name'] if team else None
     if not d['owned_by_me']:
         owner = get_db().execute('SELECT username FROM users WHERE id = ?', (t['user_id'],)).fetchone()
         d['owner_name'] = owner['username'] if owner else ''
     return jsonify(d)
+
+
+def _clean_team(value):
+    """Team eines Trainings: nur Trainer, nur eigene Teams; leer -> kein Team."""
+    if value in (None, ''):
+        return None
+    if g.user['role'] != 'trainer':
+        raise ApiError('Nur Trainer können Teams zuordnen', 403)
+    try:
+        team_id = int(value)
+    except (TypeError, ValueError):
+        raise ApiError('Ungültiges Team')
+    if not get_db().execute('SELECT 1 FROM teams WHERE id = ? AND user_id = ?', (team_id, uid())).fetchone():
+        raise ApiError('Team nicht gefunden', 404)
+    return team_id
 
 
 @bp.put('/api/trainings/<int:training_id>')
@@ -342,13 +359,16 @@ def update_training(training_id):
     date = data['date'] if 'date' in data else t['date']
     notes = str(data['notes'] or '')[:20000] if 'notes' in data else t['notes']
     time_ = clean_time(data['time']) if 'time' in data else t['time']
+    team_id = t['team_id']
+    if 'team_id' in data:
+        team_id = _clean_team(data['team_id'])
     if not title:
         return err('Titel ist erforderlich')
     if not valid_date(date):
         return err('Bitte gib ein gültiges Datum an')
     db = get_db()
-    db.execute('UPDATE trainings SET title=?, date=?, notes=?, time=? WHERE id=?',
-               (title, date, notes, time_, training_id))
+    db.execute('UPDATE trainings SET title=?, date=?, notes=?, time=?, team_id=? WHERE id=?',
+               (title, date, notes, time_, team_id, training_id))
     db.commit()
     return jsonify({'message': 'Gespeichert'})
 
@@ -373,8 +393,8 @@ def duplicate_training(training_id):
         return err('Bitte gib ein gültiges Datum an')
     title = clean_str(data.get('title'), 120) or t['title']
     db = get_db()
-    cur = db.execute('INSERT INTO trainings (user_id, title, date, time, notes) VALUES (?,?,?,?,?)',
-                     (uid(), title, date, t['time'], ''))
+    cur = db.execute('INSERT INTO trainings (user_id, title, date, time, notes, team_id) VALUES (?,?,?,?,?,?)',
+                     (uid(), title, date, t['time'], '', t['team_id']))
     new_id = cur.lastrowid
     db.execute('''INSERT INTO training_exercises (training_id, exercise_id, order_index, block, duration)
                   SELECT ?, exercise_id, order_index, block, duration FROM training_exercises WHERE training_id = ?''',

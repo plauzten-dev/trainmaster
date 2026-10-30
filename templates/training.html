@@ -3,14 +3,14 @@
 {% block content %}
 <div id="training" data-id="{{ training_id }}">
   <div class="tr-hero card flush" id="trHero"><div class="skeleton" style="height:180px;border-radius:0"></div></div>
-  <div class="kpis" id="trKpis"></div>
+  <div id="trRsvp"></div>
   <div class="segmented tr-tabs" id="trTabs" role="tablist">
     <button type="button" class="active" data-tab="exercises" role="tab">Übungen</button>
-    <button type="button" data-tab="history" role="tab">Verlauf</button>
+    <button type="button" data-tab="team" role="tab" class="hidden" id="tabTeam">Team</button>
     <button type="button" data-tab="notes" role="tab">Notizen</button>
   </div>
   <section class="tr-pane" data-pane="exercises" id="paneExercises"><div class="loading"><span class="spinner"></span></div></section>
-  <section class="tr-pane hidden" data-pane="history" id="paneHistory"></section>
+  <section class="tr-pane hidden" data-pane="team" id="paneTeam"></section>
   <section class="tr-pane hidden" data-pane="notes" id="paneNotes">
     <div class="card">
       <div class="row between" style="margin-bottom:8px"><span class="label">Notizen zum Training</span><span class="faint" id="notesStatus"></span></div>

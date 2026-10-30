@@ -32,6 +32,7 @@ MIGRATIONS = [
     "ALTER TABLE players ADD COLUMN invite_code TEXT",
     "ALTER TABLE players ADD COLUMN linked_user_id INTEGER REFERENCES users(id) ON DELETE SET NULL",
     "ALTER TABLE events ADD COLUMN team_id INTEGER REFERENCES teams(id) ON DELETE SET NULL",
+    "ALTER TABLE trainings ADD COLUMN team_id INTEGER REFERENCES teams(id) ON DELETE SET NULL",
     "CREATE UNIQUE INDEX IF NOT EXISTS idx_exercises_share ON exercises(share_token)",
     "CREATE UNIQUE INDEX IF NOT EXISTS idx_players_invite ON players(invite_code)",
     "CREATE INDEX IF NOT EXISTS idx_memberships_team ON player_team_memberships(team_id)",

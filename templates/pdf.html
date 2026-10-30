@@ -13,7 +13,7 @@
 {% include '_icons.html' %}
 <div class="toolbar">
   <a class="tb-btn" href="/training/{{ t.id }}" id="backBtn"><svg class="i"><use href="#i-chev-left"/></svg>Zurück</a>
-  <button class="tb-btn primary" type="button" id="printBtn"><svg class="i"><use href="#i-printer"/></svg>PDF drucken/speichern</button>
+  <button class="tb-btn primary" type="button" id="printBtn" data-file="/training/{{ t.id }}/pdf/file" data-name="{{ t.title }}.pdf"><svg class="i"><use href="#i-printer"/></svg><span id="printLabel">PDF drucken/speichern</span></button>
 </div>
 <main class="sheet">
   <header class="doc-head">

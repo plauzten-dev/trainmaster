@@ -5,12 +5,14 @@ import secrets
 from datetime import timedelta
 from urllib.parse import urlparse
 
-from flask import (Flask, abort, jsonify, redirect, render_template, request,
+from flask import (Flask, Response, abort, jsonify, redirect, render_template, request,
                    send_from_directory)
 from werkzeug.exceptions import HTTPException
+from werkzeug.utils import secure_filename
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 import config
+import pdf_export
 from config import APP_NAME, APP_VERSION, BASE_DIR, UPLOAD_DIR, frontend_config
 from database import close_db, get_db, init_db
 from helpers import ApiError, err, get_training, load_user, login_required, role_required, training_sports
@@ -192,13 +194,8 @@ def training_page(training_id):
     return _page('training.html', 'trainings', training_id=training_id)
 
 
-@app.route('/training/<int:training_id>/pdf')
-@login_required
-def training_pdf(training_id):
-    try:
-        t = get_training(training_id)
-    except ApiError:
-        return redirect('/calendar')
+def _pdf_data(training_id):
+    t = get_training(training_id)
     rows = get_db().execute(
         '''SELECT e.*, te.block, te.duration, te.order_index FROM training_exercises te
            JOIN exercises e ON e.id = te.exercise_id WHERE te.training_id = ?''', (training_id,)).fetchall()
@@ -207,8 +204,33 @@ def training_pdf(training_id):
     total = sum(r['duration'] or 0 for r in exercises)
     y, m, d = (int(x) for x in t['date'].split('-'))
     date_label = f'{d}. {config.MONTHS_DE[m - 1]} {y}'
-    return render_template('pdf.html', t=t, exercises=exercises, total=total, date_label=date_label,
-                           sport=training_sports([training_id])[training_id])
+    return dict(t=t, exercises=exercises, total=total, date_label=date_label,
+                sport=training_sports([training_id])[training_id])
+
+
+@app.route('/training/<int:training_id>/pdf')
+@login_required
+def training_pdf(training_id):
+    try:
+        data = _pdf_data(training_id)
+    except ApiError:
+        return redirect('/calendar')
+    return render_template('pdf.html', **data)
+
+
+@app.route('/training/<int:training_id>/pdf/file')
+@login_required
+def training_pdf_file(training_id):
+    """Echte PDF-Datei (fuer iPhone-App: Teilen -> Drucken / In Dateien sichern)."""
+    try:
+        data = _pdf_data(training_id)
+    except ApiError:
+        abort(404)
+    body = pdf_export.training_pdf(config.APP_NAME, **data)
+    resp = Response(body, mimetype='application/pdf')
+    name = secure_filename(data['t']['title']) or 'Training'
+    resp.headers['Content-Disposition'] = f'inline; filename="{name}.pdf"'
+    return resp
 
 
 @app.route('/players')

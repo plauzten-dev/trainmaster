@@ -11,17 +11,22 @@
       t = await api('/api/trainings/' + ID);
       canEdit = !!t.owned_by_me;
       renderHero(); renderExercises(); setupNotes();
+      $('#tabTeam').classList.toggle('hidden', !isTeamTrainer());
+      if (USER_ROLE === 'player' && !canEdit) renderRsvp();
       if (new URLSearchParams(location.search).get('start') === '1') {
         history.replaceState(null, '', location.pathname);
         if (t.exercises.length) startLive();
       }
-      if (!$('#paneHistory').classList.contains('hidden')) renderHistory();
+      if (!$('#paneTeam').classList.contains('hidden')) renderTeam();
     } catch (err) {
       if (err.status === 404) { location.href = '/calendar'; return; }
       renderError($('#trHero'), err.message, load);
       $('#paneExercises').innerHTML = '';
     }
   }
+
+  /* Teams gibt es nur fuer Trainer bei eigenen Trainings (nicht fuer Privatpersonen und Spieler) */
+  function isTeamTrainer() { return USER_ROLE === 'trainer' && canEdit; }
 
   /* ---------------- Kopf + Kennzahlen */
   function sorted() {
@@ -31,32 +36,28 @@
     document.title = t.title + ' · ' + APP_NAME;
     $('#trHero').innerHTML = '<div class="hero-art" style="--c:' + sportColor(t.sport) + '">' + sportMotif(t.sport, 'motif big-bg') +
       '<div class="hero-top"><a class="icon-btn btn-glass" href="/my-trainings" aria-label="Zurück">' + icon('chev-left') + '</a><span class="flex1"></span>' +
-      '<a class="icon-btn btn-glass" href="/training/' + ID + '/pdf" aria-label="PDF">' + icon('printer', 'sm') + '</a>' +
-      (canEdit ? '<button class="icon-btn btn-glass" type="button" id="moreBtn" aria-label="Mehr">' + icon('more') + '</button>' : '') + '</div>' +
+      '<button class="icon-btn btn-glass" type="button" id="moreBtn" aria-label="Mehr">' + icon('more') + '</button></div>' +
       '<div class="hero-info"><div class="hero-sport">' + sportIcon(t.sport, 'sm') + escHtml(t.sport) + (canEdit ? '' : ' · <span class="badge hero-badge">Vom Trainer' + (t.owner_name ? ' ' + escHtml(t.owner_name) : '') + '</span>') + '</div>' +
       '<h1 class="large-title hero-title">' + escHtml(t.title) + '</h1>' +
-      '<div class="hero-date">' + icon('calendar', 'sm') + escHtml(fmtWeekdayDate(t.date)) + ' ' + parseISO(t.date).getFullYear() + (t.time ? ' · ' + icon('clock', 'sm') + escHtml(t.time) + ' Uhr' : '') + '</div></div></div>' +
-      '<div class="hero-actions"><button class="btn btn-primary" type="button" id="startBtn">' + icon('play', 'sm fill') + 'Training starten</button>' +
-      (canEdit ? '<button class="btn btn-tinted" type="button" id="addExBtn">' + icon('plus', 'sm') + 'Übung hinzufügen</button>' : '') + '</div>';
+      '<div class="hero-date">' + icon('calendar', 'sm') + escHtml(fmtWeekdayDate(t.date)) + ' ' + parseISO(t.date).getFullYear() + (t.time ? ' · ' + icon('clock', 'sm') + escHtml(t.time) + ' Uhr' : '') + '</div>' +
+      '<div class="hero-meta" id="heroMeta"></div></div></div>' +
+      '<div class="hero-actions"><button class="btn btn-primary" type="button" id="startBtn">' + icon('play', 'sm fill') + 'Training starten</button></div>';
     $('#startBtn').addEventListener('click', startLive);
-    if (canEdit) {
-      $('#addExBtn').addEventListener('click', openPicker);
-      $('#moreBtn').addEventListener('click', (e) => openMore(e.currentTarget));
-    }
+    $('#moreBtn').addEventListener('click', (e) => openMore(e.currentTarget));
     renderKpis();
   }
+  /* Kennzahlen als ruhige Zeile im Kopf statt eigener Kacheln */
   function renderKpis() {
     const mins = t.exercises.reduce((s, e) => s + (e.duration || 0), 0);
-    const blocks = new Set(t.exercises.map((e) => e.block)).size;
-    $('#trKpis').innerHTML = '<div class="stat glass"><b>' + mins + '</b><span>Minuten gesamt</span></div><div class="stat glass"><b>' + t.exercises.length + '</b><span>Übungen</span></div>' +
-      '<div class="stat glass"><b>' + blocks + '</b><span>' + (blocks === 1 ? 'Block' : 'Blöcke') + '</span></div>';
+    $('#heroMeta').innerHTML = '<span>' + plural(t.exercises.length, 'Übung', 'Übungen') + '</span>' + (mins ? '<span>' + mins + ' Min.</span>' : '') +
+      (isTeamTrainer() && t.team_name ? '<span class="hero-team">' + icon('users', 'sm') + escHtml(t.team_name) + '</span>' : '');
     $('#startBtn').disabled = !t.exercises.length;
   }
   function openMore(anchor) {
-    const pop = openPopover(anchor, '<button class="menu-item" type="button" data-m="edit">' + icon('edit') + 'Bearbeiten</button>' +
-      '<button class="menu-item" type="button" data-m="dup">' + icon('copy') + 'Duplizieren</button>' +
-      '<a class="menu-item" href="/training/' + ID + '/pdf">' + icon('printer') + 'PDF / Drucken</a><div class="menu-sep"></div>' +
-      '<button class="menu-item" type="button" data-m="del" style="color:var(--danger)">' + icon('trash') + 'Löschen</button>');
+    const pop = openPopover(anchor, (canEdit ? '<button class="menu-item" type="button" data-m="edit">' + icon('edit') + 'Bearbeiten</button>' +
+      '<button class="menu-item" type="button" data-m="dup">' + icon('copy') + 'Duplizieren</button>' : '') +
+      '<a class="menu-item" href="/training/' + ID + '/pdf">' + icon('printer') + 'PDF / Drucken</a>' +
+      (canEdit ? '<div class="menu-sep"></div><button class="menu-item" type="button" data-m="del" style="color:var(--danger)">' + icon('trash') + 'Löschen</button>' : ''));
     pop.addEventListener('click', (e) => {
       const b = e.target.closest('[data-m]'); if (!b) return;
       closePopover();
@@ -101,7 +102,7 @@
     const b = e.target.closest('button'); if (!b) return;
     $$('#trTabs button').forEach((x) => x.classList.toggle('active', x === b));
     $$('.tr-pane').forEach((p) => p.classList.toggle('hidden', p.dataset.pane !== b.dataset.tab));
-    if (b.dataset.tab === 'history' && t) renderHistory();
+    if (b.dataset.tab === 'team' && t) renderTeam();
   });
 
   /* ---------------- Uebungen nach Block */
@@ -110,7 +111,6 @@
     if (!t.exercises.length) {
       pane.innerHTML = emptyState('cones', 'Noch keine Übungen', canEdit ? 'Füge Übungen aus der Datenbank hinzu und ordne sie Blöcken zu.' : 'Der Trainer hat noch keine Übungen eingeplant.',
         canEdit ? '<button class="btn btn-primary" type="button" data-add>' + icon('plus', 'sm') + 'Übung hinzufügen</button>' : '');
-      const a = $('[data-add]', pane); if (a) a.addEventListener('click', openPicker);
       return;
     }
     const list = sorted();
@@ -123,6 +123,7 @@
       html += '<section class="block card flush" data-block="' + escHtml(block) + '"><header class="block-head"><span class="block-num">' + n + '</span><h3>' + escHtml(block) + '</h3>' +
         '<span class="muted">' + plural(items.length, 'Übung', 'Übungen') + (mins ? ' · ' + mins + ' Min.' : '') + '</span></header><div class="block-list">' + items.map(rowHtml).join('') + '</div></section>';
     });
+    if (canEdit) html += '<button class="add-row" type="button" data-add>' + icon('plus', 'sm') + 'Übung hinzufügen</button>';
     pane.innerHTML = html;
   }
   function rowHtml(ex) {
@@ -130,39 +131,39 @@
       (canEdit ? '<span class="grip" aria-label="Ziehen zum Sortieren" title="Ziehen zum Sortieren">' + icon('grip') + '</span>' : '') +
       '<div class="tx-thumb" data-open="' + ex.id + '" role="button" tabindex="0">' + exMediaHtml(ex) + '</div>' +
       '<div class="tx-main"><div class="tx-title" data-open="' + ex.id + '" role="button" tabindex="0">' + escHtml(ex.title) + '</div>' +
-      '<div class="tx-sub"><span class="sport-dot" style="--c:' + sportColor(ex.sport) + '"></span>' + escHtml(ex.core_competency) + ' · ' + escHtml(ex.difficulty) + '</div>' +
-      (canEdit ? '<div class="tx-ctrl"><select class="select sm" data-block-sel aria-label="Block">' + BLOCKS.map((b) => '<option' + (b === ex.block ? ' selected' : '') + '>' + escHtml(b) + '</option>').join('') + '</select>' +
-        '<label class="dur"><input class="input sm" type="number" inputmode="numeric" min="0" max="' + (LIM.exercise_duration_in_training_max || 240) + '" value="' + (ex.duration == null ? '' : ex.duration) + '" placeholder="–" data-dur aria-label="Dauer in Minuten"><span>Min.</span></label></div>'
-        : (ex.duration != null ? '<div class="tx-sub">' + icon('clock', 'sm') + ex.duration + ' Min.</div>' : '')) + '</div>' +
-      (canEdit ? '<button class="icon-btn sm plain danger" type="button" data-remove aria-label="Entfernen">' + icon('x', 'sm') + '</button>' : '') + '</div>';
+      '<div class="tx-sub"><span class="sport-dot" style="--c:' + sportColor(ex.sport) + '"></span>' + escHtml(ex.core_competency) + ' · ' + escHtml(ex.difficulty) + '</div></div>' +
+      (canEdit ? '<button class="dur-pill' + (ex.duration == null ? ' empty' : '') + '" type="button" data-edit aria-label="Block und Dauer ändern">' + icon('clock', 'sm') + (ex.duration == null ? '– Min.' : ex.duration + ' Min.') + '</button>'
+        : (ex.duration != null ? '<span class="dur-pill static">' + icon('clock', 'sm') + ex.duration + ' Min.</span>' : '')) + '</div>';
   }
   const pane = $('#paneExercises');
   pane.addEventListener('click', (e) => {
+    if (e.target.closest('[data-add]')) { openPicker(); return; }
     const op = e.target.closest('[data-open]');
     if (op) { openExercise(Number(op.dataset.open)); return; }
-    const rm = e.target.closest('[data-remove]');
-    if (rm) removeExercise(Number(rm.closest('.tx-row').dataset.eid), rm);
+    const ed = e.target.closest('[data-edit]');
+    if (ed) editExercise(Number(ed.closest('.tx-row').dataset.eid));
   });
   pane.addEventListener('keydown', (e) => { const op = e.target.closest('[data-open]'); if (op && e.key === 'Enter') openExercise(Number(op.dataset.open)); });
-  pane.addEventListener('change', async (e) => {
-    const row = e.target.closest('.tx-row'); if (!row) return;
-    const eid = Number(row.dataset.eid), ex = t.exercises.find((x) => x.id === eid);
-    if (e.target.matches('[data-block-sel]')) {
-      try { const r = await api('/api/trainings/' + ID + '/exercises/' + eid + '/meta', { method: 'PUT', body: { block: e.target.value } }); ex.block = r.block; renderExercises(); renderKpis(); }
-      catch (err) { showToast(err.message, 'error'); e.target.value = ex.block; }
-    }
-    if (e.target.matches('[data-dur]')) {
-      const v = e.target.value === '' ? null : Number(e.target.value);
-      if (v != null && (isNaN(v) || v < 0 || v > (LIM.exercise_duration_in_training_max || 240))) { showToast('Dauer muss zwischen 0 und 240 Minuten liegen', 'error'); e.target.value = ex.duration == null ? '' : ex.duration; return; }
-      try { const r = await api('/api/trainings/' + ID + '/exercises/' + eid + '/meta', { method: 'PUT', body: { duration: v } }); ex.duration = r.duration; renderKpis(); updateBlockHeads(); }
-      catch (err) { showToast(err.message, 'error'); e.target.value = ex.duration == null ? '' : ex.duration; }
-    }
-  });
-  function updateBlockHeads() {
-    $$('.block', pane).forEach((sec) => {
-      const items = t.exercises.filter((e) => e.block === sec.dataset.block);
-      const mins = items.reduce((s, e) => s + (e.duration || 0), 0);
-      $('.block-head .muted', sec).textContent = plural(items.length, 'Übung', 'Übungen') + (mins ? ' · ' + mins + ' Min.' : '');
+  /* Block, Dauer und Entfernen in einem kleinen Blatt statt Steuerelementen in jeder Zeile */
+  function editExercise(eid) {
+    const ex = t.exercises.find((x) => x.id === eid); if (!ex) return;
+    const max = LIM.exercise_duration_in_training_max || 240;
+    const body = openModal(ex.title, '<form id="exForm" novalidate><div class="form-row"><div class="field"><label for="exBlock">Block</label><select class="select" id="exBlock">' +
+      BLOCKS.map((b) => '<option' + (b === ex.block ? ' selected' : '') + '>' + escHtml(b) + '</option>').join('') + '</select></div>' +
+      '<div class="field"><label for="exDur">Dauer (Min.)</label><input class="input" id="exDur" type="number" inputmode="numeric" min="0" max="' + max + '" value="' + (ex.duration == null ? '' : ex.duration) + '" placeholder="optional"></div></div>' +
+      '<p class="form-error" id="exErr"></p><div class="modal-foot"><button class="btn btn-danger" type="button" data-rm>' + icon('trash', 'sm') + 'Entfernen</button><span class="flex1"></span>' +
+      '<button class="btn btn-primary" type="submit">Speichern</button></div></form>', 'sm', { autofocus: false });
+    $('[data-rm]', body).addEventListener('click', (e) => removeExercise(eid, e.currentTarget));
+    $('#exForm', body).addEventListener('submit', (e) => {
+      e.preventDefault();
+      const raw = $('#exDur', body).value, dur = raw === '' ? null : Number(raw), block = $('#exBlock', body).value;
+      if (dur != null && (isNaN(dur) || dur < 0 || dur > max)) { $('#exErr', body).textContent = 'Dauer muss zwischen 0 und ' + max + ' Minuten liegen.'; return; }
+      withBusy(e.target.querySelector('[type=submit]'), async () => {
+        try {
+          const r = await api('/api/trainings/' + ID + '/exercises/' + eid + '/meta', { method: 'PUT', body: { block: block, duration: dur } });
+          ex.block = r.block; ex.duration = r.duration; closeModal(); renderExercises(); renderKpis();
+        } catch (err) { $('#exErr', body).textContent = err.message; }
+      });
     });
   }
   async function removeExercise(eid, btn) {
@@ -170,7 +171,7 @@
     const ok = await confirmDialog({ title: 'Übung entfernen?', message: '„' + (ex ? ex.title : '') + '“ wird aus diesem Training entfernt (nicht aus der Datenbank).', confirmText: 'Entfernen', danger: true });
     if (!ok) return;
     withBusy(btn, async () => {
-      try { await api('/api/trainings/' + ID + '/exercises/' + eid, { method: 'DELETE' }); t.exercises = t.exercises.filter((x) => x.id !== eid); renderExercises(); renderKpis(); }
+      try { await api('/api/trainings/' + ID + '/exercises/' + eid, { method: 'DELETE' }); t.exercises = t.exercises.filter((x) => x.id !== eid); if (modalStack.length) closeModal(); renderExercises(); renderKpis(); }
       catch (err) { showToast(err.message, 'error'); }
     });
   }
@@ -302,91 +303,102 @@
     area.addEventListener('input', () => { status.textContent = 'Änderungen …'; save(); });
   }
 
-  /* ---------------- Verlauf / Anwesenheit */
-  async function renderHistory() {
-    const el = $('#paneHistory');
-    if (USER_ROLE === 'trainer' && canEdit) return renderTrainerAttendance(el);
-    if (USER_ROLE === 'player' && !canEdit) return renderMyAttendance(el);
-    el.innerHTML = '<div class="card">' + emptyState('history', 'Keine Anwesenheit', 'Bei privaten Trainings gibt es keine Anwesenheitserfassung.', '', true) + '</div>';
+  /* ---------------- Spieler: Zusage (kompakt ueber den Tabs) */
+  async function renderRsvp() {
+    const el = $('#trRsvp');
+    let r;
+    try { r = await api('/api/trainings/' + ID + '/my-attendance'); } catch (err) { el.innerHTML = ''; return; }
+    const draw = (present) => {
+      el.innerHTML = '<div class="card rsvp"><div class="rsvp-text"><b>Bist du dabei?</b><span class="muted">' +
+        (present === 1 ? 'Du hast zugesagt.' : present === 0 ? 'Du hast abgesagt.' : 'Noch keine Rückmeldung.') + '</span></div>' +
+        '<div class="rsvp-btns"><button class="btn btn-sm ' + (present === 1 ? 'btn-primary' : 'btn-tinted') + '" type="button" data-p="1">' + icon('check', 'sm') + 'Ja</button>' +
+        '<button class="btn btn-sm ' + (present === 0 ? 'btn-danger solid' : 'btn-danger') + '" type="button" data-p="0">' + icon('x', 'sm') + 'Nein</button></div></div>';
+      $$('[data-p]', el).forEach((b) => b.addEventListener('click', () => withBusy(b, async () => {
+        const val = b.dataset.p === '1' ? (present === 1 ? null : true) : (present === 0 ? null : false);
+        try { const res = await api('/api/trainings/' + ID + '/my-attendance', { method: 'PUT', body: { present: val } }); draw(res.present); showToast('Rückmeldung gespeichert', 'success'); }
+        catch (err) { showToast(err.message, 'error'); }
+      })));
+    };
+    draw(r.present);
   }
-  async function renderMyAttendance(el) {
-    el.innerHTML = '<div class="card"><div class="loading"><span class="spinner"></span></div></div>';
-    try {
-      const r = await api('/api/trainings/' + ID + '/my-attendance');
-      const draw = (present) => {
-        el.innerHTML = '<div class="card my-att"><h3>Bist du dabei?</h3><p class="muted">' + escHtml(r.player_name) + ' · ' + escHtml(fmtWeekdayDate(t.date)) + '</p>' +
-          '<div class="row" style="margin-top:14px"><button class="btn ' + (present === 1 ? 'btn-primary' : 'btn-tinted') + '" type="button" data-p="1">' + icon('check', 'sm') + 'Ja, ich bin dabei</button>' +
-          '<button class="btn ' + (present === 0 ? 'btn-danger solid' : 'btn-danger') + '" type="button" data-p="0">' + icon('x', 'sm') + 'Nein</button></div>' +
-          '<p class="form-hint" style="margin-top:10px">' + (present === 1 ? 'Du hast zugesagt.' : present === 0 ? 'Du hast abgesagt.' : 'Noch keine Rückmeldung.') + '</p></div>';
-        $$('[data-p]', el).forEach((b) => b.addEventListener('click', () => withBusy(b, async () => {
-          const val = b.dataset.p === '1' ? (present === 1 ? null : true) : (present === 0 ? null : false);
-          try { const res = await api('/api/trainings/' + ID + '/my-attendance', { method: 'PUT', body: { present: val } }); draw(res.present); showToast('Rückmeldung gespeichert', 'success'); }
+
+  /* ---------------- Team + Anwesenheit (nur Trainer) */
+  async function renderTeam() {
+    const el = $('#paneTeam');
+    if (!isTeamTrainer()) { el.innerHTML = ''; return; }
+    if (!t.team_id) {
+      el.innerHTML = '<div class="card">' + emptyState('users', 'Kein Team zugeordnet', 'Füge ein Team hinzu, um für dieses Training die Anwesenheit zu erfassen.',
+        '<button class="btn btn-primary" type="button" data-pick-team>' + icon('plus', 'sm') + 'Team hinzufügen</button>', true) + '</div>';
+      $('[data-pick-team]', el).addEventListener('click', pickTeam);
+      return;
+    }
+    el.innerHTML = '<div class="card att-card"><div class="team-head"><span class="team-ic">' + icon('users') + '</span>' +
+      '<span class="li-main"><span class="li-title">' + escHtml(t.team_name) + '</span><span class="li-sub" id="attCount">&nbsp;</span></span>' +
+      '<button class="btn btn-tinted btn-sm" type="button" data-pick-team>Ändern</button></div><div id="attBody"><div class="loading"><span class="spinner"></span></div></div></div>';
+    $('[data-pick-team]', el).addEventListener('click', pickTeam);
+    const box = $('#attBody', el);
+    let players;
+    try { players = await api('/api/trainings/' + ID + '/attendance?team_id=' + t.team_id); }
+    catch (err) { renderError(box, err.message, renderTeam); return; }
+    if (!players.length) { $('#attCount', el).textContent = 'Keine Spieler'; box.innerHTML = emptyState('user', 'Keine Spieler im Team', '', '<a class="btn btn-tinted btn-sm" href="/players">Spieler hinzufügen</a>', true); return; }
+    const states = { null: ['circle', 'Offen', ''], 1: ['check-circle', 'Anwesend', 'on'], 0: ['x-circle', 'Fehlt', 'off'] };
+    const draw = () => {
+      const present = players.filter((p) => p.present === 1).length;
+      $('#attCount', el).textContent = present + ' von ' + players.length + ' anwesend';
+      box.innerHTML = '<div class="att-bar"><div class="att-progress"><i style="width:' + (present / players.length * 100) + '%"></i></div>' +
+        (present < players.length ? '<button class="btn btn-ghost btn-sm" type="button" id="attAll">' + icon('check', 'sm') + 'Alle anwesend</button>' : '') + '</div>' +
+        '<div class="att-list">' + players.map((p) => {
+          const s = states[p.present == null ? 'null' : p.present];
+          return '<div class="att-row"><span class="att-av">' + avatarHtml(p.avatar_path, p.name, 'sm') + (p.status !== 'fit' ? '<i class="status-dot ' + p.status + '" title="' + escHtml((CONFIG.player_status_labels || {})[p.status]) + '"></i>' : '') + '</span>' +
+            '<span class="li-main"><span class="li-title">' + escHtml(p.name) + '</span><span class="li-sub">' + escHtml(p.position) + (p.number ? ' · #' + p.number : '') + (p.status !== 'fit' ? ' · ' + escHtml((CONFIG.player_status_labels || {})[p.status]) : '') + '</span></span>' +
+            '<button class="tri ' + s[2] + '" type="button" data-pid="' + p.id + '" aria-label="' + escHtml(p.name) + ': ' + s[1] + '">' + icon(s[0]) + '<span>' + s[1] + '</span></button></div>';
+        }).join('') + '</div>';
+    };
+    draw();
+    box.onclick = async (e) => {
+      const all = e.target.closest('#attAll');
+      if (all) {
+        withBusy(all, async () => {
+          try { await api('/api/trainings/' + ID + '/attendance/all', { method: 'PUT', body: { team_id: t.team_id, present: true } }); players.forEach((p) => { p.present = 1; }); draw(); showToast('Alle als anwesend markiert', 'success'); }
           catch (err) { showToast(err.message, 'error'); }
-        })));
-      };
-      draw(r.present);
-    } catch (err) {
-      if (err.status === 404) el.innerHTML = '<div class="card">' + emptyState('user', 'Kein Spielerprofil', 'Für dieses Training ist kein verknüpftes Spielerprofil vorhanden.', '', true) + '</div>';
-      else renderError(el, err.message, () => renderMyAttendance(el));
-    }
+        });
+        return;
+      }
+      const b = e.target.closest('[data-pid]'); if (!b) return;
+      const p = players.find((x) => x.id === Number(b.dataset.pid));
+      const old = p.present;
+      const next = old == null ? true : old === 1 ? false : null;
+      p.present = next === true ? 1 : next === false ? 0 : null; draw();
+      try { await api('/api/trainings/' + ID + '/attendance', { method: 'PUT', body: { player_id: p.id, present: next } }); }
+      catch (err) { p.present = old; draw(); showToast(err.message, 'error'); }
+    };
   }
-  let teams = null;
-  async function renderTrainerAttendance(el) {
-    el.innerHTML = '<div class="card"><div class="loading"><span class="spinner"></span></div></div>';
-    try { teams = await api('/api/teams'); } catch (err) { renderError(el, err.message, () => renderTrainerAttendance(el)); return; }
-    if (!teams.length) { el.innerHTML = '<div class="card">' + emptyState('users', 'Noch kein Team', 'Lege ein Team an, um die Anwesenheit zu erfassen.', '<a class="btn btn-primary btn-sm" href="/players">Team erstellen</a>', true) + '</div>'; return; }
-    const key = 'att_team_' + ID;
-    let teamId = Number(storageGet('localStorage', key)) || null;
-    if (teamId && !teams.some((x) => x.id === teamId)) { storageDel('localStorage', key); teamId = null; }
-    if (!teamId && teams.length === 1) teamId = teams[0].id;
-    el.innerHTML = '<div class="card att-card"><div class="att-head"><select class="select" id="attTeam" aria-label="Team wählen"><option value="">Team wählen …</option>' +
-      teams.map((x) => '<option value="' + x.id + '"' + (x.id === teamId ? ' selected' : '') + '>' + escHtml(x.name) + '</option>').join('') + '</select>' +
-      '<button class="icon-btn" type="button" id="attReload" aria-label="Neu laden">' + icon('refresh', 'sm') + '</button></div><div id="attBody"></div></div>';
-    $('#attTeam', el).addEventListener('change', (e) => {
-      teamId = Number(e.target.value) || null;
-      if (teamId) storageSet('localStorage', key, String(teamId)); else storageDel('localStorage', key);
-      loadAttendance();
-    });
-    $('#attReload', el).addEventListener('click', loadAttendance);
-    async function loadAttendance() {
-      const box = $('#attBody', el);
-      if (!teamId) { box.innerHTML = emptyState('users', 'Wähle ein Team', 'Danach kannst du für jeden Spieler die Anwesenheit eintragen.', '', true); return; }
-      box.innerHTML = '<div class="loading"><span class="spinner"></span></div>';
-      try {
-        const players = await api('/api/trainings/' + ID + '/attendance?team_id=' + teamId);
-        if (!players.length) { box.innerHTML = emptyState('user', 'Keine Spieler im Team', '', '<a class="btn btn-tinted btn-sm" href="/players">Spieler hinzufügen</a>', true); return; }
-        const count = () => players.filter((p) => p.present === 1).length;
-        const states = { null: ['circle', 'Nicht markiert', ''], 1: ['check-circle', 'Anwesend', 'on'], 0: ['x-circle', 'Fehlt', 'off'] };
-        const draw = () => {
-          box.innerHTML = '<div class="att-bar"><b id="attCount">' + count() + ' / ' + players.length + ' anwesend</b><button class="btn btn-tinted btn-sm" type="button" id="attAll">' + icon('check', 'sm') + 'Ganzes Team anwesend</button></div>' +
-            '<div class="att-list">' + players.map((p) => {
-              const s = states[p.present == null ? 'null' : p.present];
-              return '<div class="att-row"><span class="att-av">' + avatarHtml(p.avatar_path, p.name, 'sm') + (p.status !== 'fit' ? '<i class="status-dot ' + p.status + '" title="' + escHtml((CONFIG.player_status_labels || {})[p.status]) + '"></i>' : '') + '</span>' +
-                '<span class="li-main"><span class="li-title">' + escHtml(p.name) + '</span><span class="li-sub">' + escHtml(p.position) + (p.number ? ' · #' + p.number : '') + (p.status !== 'fit' ? ' · ' + escHtml((CONFIG.player_status_labels || {})[p.status]) : '') + '</span></span>' +
-                '<button class="tri ' + s[2] + '" type="button" data-pid="' + p.id + '" aria-label="' + escHtml(p.name) + ': ' + s[1] + '">' + icon(s[0]) + '<span>' + s[1] + '</span></button></div>';
-            }).join('') + '</div>';
-        };
-        draw();
-        box.onclick = async (e) => {
-          const all = e.target.closest('#attAll');
-          if (all) {
-            withBusy(all, async () => {
-              try { await api('/api/trainings/' + ID + '/attendance/all', { method: 'PUT', body: { team_id: teamId, present: true } }); players.forEach((p) => { p.present = 1; }); draw(); showToast('Alle als anwesend markiert', 'success'); }
-              catch (err) { showToast(err.message, 'error'); }
-            });
-            return;
-          }
-          const b = e.target.closest('[data-pid]'); if (!b) return;
-          const p = players.find((x) => x.id === Number(b.dataset.pid));
-          const old = p.present;
-          const next = old == null ? true : old === 1 ? false : null;
-          p.present = next === true ? 1 : next === false ? 0 : null; draw();
-          try { await api('/api/trainings/' + ID + '/attendance', { method: 'PUT', body: { player_id: p.id, present: next } }); }
-          catch (err) { p.present = old; draw(); showToast(err.message, 'error'); }
-        };
-      } catch (err) { renderError(box, err.message, loadAttendance); }
+  async function pickTeam() {
+    const body = openModal('Team wählen', '<div id="tmList"><div class="loading"><span class="spinner"></span></div></div>', 'sm');
+    let teams;
+    try { teams = await api('/api/teams'); } catch (err) { renderError($('#tmList', body), err.message, () => { closeModal(); pickTeam(); }); return; }
+    if (!teams.length) {
+      $('#tmList', body).innerHTML = emptyState('users', 'Noch kein Team', 'Lege zuerst ein Team an.', '<a class="btn btn-primary btn-sm" href="/players">Team erstellen</a>', true);
+      return;
     }
-    loadAttendance();
+    $('#tmList', body).innerHTML = '<div class="list pick-teams">' + teams.map((x) => '<button class="list-item" type="button" data-team="' + x.id + '">' +
+      '<span class="li-ic" style="--c:' + sportColor(x.sport) + '">' + sportIcon(x.sport, 'sm') + '</span><span class="li-main"><span class="li-title">' + escHtml(x.name) + '</span>' +
+      '<span class="li-sub">' + plural(x.player_count || 0, 'Spieler', 'Spieler') + '</span></span>' + (x.id === t.team_id ? icon('check', 'sm accent-ic') : '') + '</button>').join('') + '</div>' +
+      (t.team_id ? '<div class="modal-foot"><button class="btn btn-danger" type="button" data-team="">' + icon('x', 'sm') + 'Team entfernen</button></div>' : '');
+    $('#tmList', body).addEventListener('click', (e) => {
+      const b = e.target.closest('[data-team]'); if (!b) return;
+      const id = b.dataset.team === '' ? null : Number(b.dataset.team);
+      if (id === t.team_id) { closeModal(); return; }
+      withBusy(b, async () => {
+        try {
+          await api('/api/trainings/' + ID, { method: 'PUT', body: { team_id: id } });
+          const team = teams.find((x) => x.id === id);
+          t.team_id = id; t.team_name = team ? team.name : null;
+          closeModal(); renderKpis(); renderTeam();
+          showToast(id ? 'Team hinzugefügt' : 'Team entfernt', 'success');
+        } catch (err) { showToast(err.message, 'error'); }
+      });
+    });
   }
 
   /* ---------------- Live-Modus */
