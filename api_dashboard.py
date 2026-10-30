@@ -5,17 +5,17 @@ from flask import Blueprint, g, jsonify
 
 from config import LIMITS, MONTHS_DE
 from database import get_db
-from helpers import login_required, readable_training_owner_ids, training_sports, uid, visible_events_sql
+from helpers import login_required, training_sports, uid, visible_events_sql, visible_trainings_sql
 
 bp = Blueprint('dashboard', __name__)
 
 
 def _trainings_between(start, end):
-    owners = readable_training_owner_ids()
+    where, params = visible_trainings_sql()
     rows = get_db().execute(
-        f'''SELECT id, title, date, time, user_id FROM trainings WHERE user_id IN ({",".join("?" * len(owners))})
+        f'''SELECT id, title, date, time, user_id FROM trainings WHERE {where}
             AND date BETWEEN ? AND ? ORDER BY date, COALESCE(time, '99:99')''',
-        owners + [start, end]).fetchall()
+        params + [start, end]).fetchall()
     return rows
 
 
@@ -35,12 +35,11 @@ def dashboard():
     db = get_db()
     me = uid()
     today = date.today()
-    owners = readable_training_owner_ids()
-    ph = ','.join('?' * len(owners))
+    where, params = visible_trainings_sql()
 
-    total = db.execute(f'SELECT COUNT(*) FROM trainings WHERE user_id IN ({ph})', owners).fetchone()[0]
-    this_month = db.execute(f'SELECT COUNT(*) FROM trainings WHERE user_id IN ({ph}) AND substr(date,1,7) = ?',
-                            owners + [today.strftime('%Y-%m')]).fetchone()[0]
+    total = db.execute(f'SELECT COUNT(*) FROM trainings WHERE {where}', params).fetchone()[0]
+    this_month = db.execute(f'SELECT COUNT(*) FROM trainings WHERE {where} AND substr(date,1,7) = ?',
+                            params + [today.strftime('%Y-%m')]).fetchone()[0]
     total_ex = db.execute('SELECT COUNT(*) FROM exercises WHERE owner_user_id IS NULL OR owner_user_id = ?',
                           (me,)).fetchone()[0]
 
@@ -109,8 +108,8 @@ def dashboard():
 @login_required
 def statistik():
     db = get_db()
-    owners = readable_training_owner_ids()
-    ph = ','.join('?' * len(owners))
+    where, params = visible_trainings_sql()
+    where_t, params_t = visible_trainings_sql('t')
     today = date.today()
     months = []
     y, m = today.year, today.month
@@ -122,14 +121,14 @@ def statistik():
     months.reverse()
     monthly = []
     for y, m in months:
-        count = db.execute(f'SELECT COUNT(*) FROM trainings WHERE user_id IN ({ph}) AND substr(date,1,7) = ?',
-                           owners + [f'{y:04d}-{m:02d}']).fetchone()[0]
+        count = db.execute(f'SELECT COUNT(*) FROM trainings WHERE {where} AND substr(date,1,7) = ?',
+                           params + [f'{y:04d}-{m:02d}']).fetchone()[0]
         monthly.append({'month': MONTHS_DE[m - 1], 'count': count, 'key': f'{y:04d}-{m:02d}'})
     top = db.execute(
         f'''SELECT e.id, e.title, e.sport, COUNT(*) AS usage_count FROM training_exercises te
             JOIN trainings t ON t.id = te.training_id JOIN exercises e ON e.id = te.exercise_id
-            WHERE t.user_id IN ({ph}) GROUP BY e.id ORDER BY usage_count DESC, e.title LIMIT ?''',
-        owners + [LIMITS['statistics_top_exercises']]).fetchall()
+            WHERE {where_t} GROUP BY e.id ORDER BY usage_count DESC, e.title LIMIT ?''',
+        params_t + [LIMITS['statistics_top_exercises']]).fetchall()
     return jsonify({'monthly': monthly, 'top_exercises': [dict(r) for r in top]})
 
 

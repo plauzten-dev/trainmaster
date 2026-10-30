@@ -26,7 +26,7 @@ UI-Texte, Antworten und Commit-Messages auf Deutsch, Code-Bezeichner Englisch.
   `python app.py` setzt `DEV_MODE` → kein Caching (Server + Service Worker), Änderungen sofort sichtbar.
 - Der Nutzer hat oft selbst einen Server auf Port 5000 laufen; Vorschau-Server weicht dann auf 5001 aus (`.claude/launch.json`).
 - Demo-Daten (nur lokal): `python scripts/seed_demo.py` → `demo_trainer`, `demo_spieler`, `demo_privat`, Passwort im Skript.
-- Tests: `python tests/api_test.py` (99 API-Prüfungen gegen temporäre DB, Exit-Code ≠ 0 bei Fehlern) – nach Backend-Änderungen laufen lassen.
+- Tests: `python tests/api_test.py` (104 API-Prüfungen gegen temporäre DB, Exit-Code ≠ 0 bei Fehlern) – nach Backend-Änderungen laufen lassen.
 - App-Icons nach Logo-Änderung neu erzeugen: `python scripts/make_icons.py` (reines Python, Geometrie im Skript, Quelle `static/icons/logo.svg`).
 
 ## Git-Besonderheiten
@@ -58,7 +58,8 @@ UI-Texte, Antworten und Commit-Messages auf Deutsch, Code-Bezeichner Englisch.
 - **iOS-26-PWA:** Lücke/schwarzer Balken unter der Tab-Leiste ist mit der CSS-Regel `@media (display-mode: standalone) { html { min-height: min(100lvh, …) } }`
   in `app.css` gelöst (WebKit-Bug 301108). App-Shell **nicht** per JS verlängern, keine `filter: blur()` auf großen Flächen (Performance).
 - Dashboard = Variante „Bibliothek“ (Heute-Karte, Diese Woche, Bibliothek-Liste, wischbare Reihen); Statistik im Dialog.
-- Training-Detail: Tabs Übungen/Team/Notizen – „Team“ nur für Trainer bei eigenen Trainings (`trainings.team_id`, keine Vorauswahl),
+- Training-Detail: Tabs Übungen/Team/Notizen – „Team“ nur für Trainer bei eigenen Trainings (`trainings.team_id`, keine Vorauswahl;
+  Sichtbarkeit `helpers.visible_trainings_sql`: mit Team nur dessen Spieler, ohne Team alle verknüpften Spieler),
   Spieler sehen stattdessen eine kompakte Zusage-Karte. Drucken: Desktop `window.print()`, iPhone/iPad teilt die echte PDF-Datei
   `/training/<id>/pdf/file` (`pdf_export.py`, reines Python, nur Text) – `window.print()` geht in der iOS-PWA nicht.
 

@@ -327,14 +327,15 @@
     const el = $('#paneTeam');
     if (!isTeamTrainer()) { el.innerHTML = ''; return; }
     if (!t.team_id) {
-      el.innerHTML = '<div class="card">' + emptyState('users', 'Kein Team zugeordnet', 'Füge ein Team hinzu, um für dieses Training die Anwesenheit zu erfassen.',
+      el.innerHTML = '<div class="card">' + emptyState('users', 'Kein Team zugeordnet', 'Ohne Team sehen alle deine Spieler dieses Training. Mit Team nur dessen Spieler – und du kannst die Anwesenheit erfassen.',
         '<button class="btn btn-primary" type="button" data-pick-team>' + icon('plus', 'sm') + 'Team hinzufügen</button>', true) + '</div>';
       $('[data-pick-team]', el).addEventListener('click', pickTeam);
       return;
     }
-    el.innerHTML = '<div class="card att-card"><div class="team-head"><span class="team-ic">' + icon('users') + '</span>' +
+    el.innerHTML = '<div class="card att-card"><div class="att-team-head"><span class="team-ic">' + icon('users') + '</span>' +
       '<span class="li-main"><span class="li-title">' + escHtml(t.team_name) + '</span><span class="li-sub" id="attCount">&nbsp;</span></span>' +
-      '<button class="btn btn-tinted btn-sm" type="button" data-pick-team>Ändern</button></div><div id="attBody"><div class="loading"><span class="spinner"></span></div></div></div>';
+      '<button class="btn btn-tinted btn-sm" type="button" data-pick-team>Ändern</button></div><div id="attBody"><div class="loading"><span class="spinner"></span></div></div></div>' +
+      '<p class="form-hint team-hint">' + icon('eye', 'sm') + 'Nur Spieler aus „' + escHtml(t.team_name) + '“ sehen dieses Training.</p>';
     $('[data-pick-team]', el).addEventListener('click', pickTeam);
     const box = $('#attBody', el);
     let players;

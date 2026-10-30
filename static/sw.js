@@ -1,6 +1,6 @@
 /* Service Worker – bei JEDEM Release CACHE_VERSION erhoehen (muss zu APP_VERSION passen). */
 'use strict';
-const CACHE_VERSION = 'v1.6.0';
+const CACHE_VERSION = 'v1.6.1';
 const CACHE = 'trainmaster-' + CACHE_VERSION;
 const V = '?v=' + CACHE_VERSION.slice(1);
 const DEV = /^(localhost|127\.|10\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.)/.test(self.location.hostname);

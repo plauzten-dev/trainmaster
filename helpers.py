@@ -95,15 +95,25 @@ def trainer_ids(user=None):
     return [r['user_id'] for r in rows]
 
 
-def readable_training_owner_ids(user=None):
+def visible_trainings_sql(alias='', user=None):
+    """WHERE-Teil + Parameter fuer sichtbare Trainings: eigene, und als Spieler die des Trainers –
+    ist ein Team zugeordnet, nur wenn der Spieler in diesem Team ist; ohne Team sehen es alle Spieler des Trainers."""
     user = user or g.user
-    return [user['id']] + trainer_ids(user)
+    p = alias + '.' if alias else ''
+    tids = trainer_ids(user)
+    if not tids:
+        return f'{p}user_id = ?', [user['id']]
+    teams = player_team_ids(user)
+    team_sql = f'{p}team_id IS NULL' + (f' OR {p}team_id IN ({",".join("?" * len(teams))})' if teams else '')
+    return (f'({p}user_id = ? OR ({p}user_id IN ({",".join("?" * len(tids))}) AND ({team_sql})))',
+            [user['id']] + tids + teams)
 
 
 def get_training(training_id, write=False):
     """Training laden mit Zugriffspruefung. Fremd -> 404, nur lesbar aber Schreibzugriff -> 403."""
-    row = get_db().execute('SELECT * FROM trainings WHERE id = ?', (training_id,)).fetchone()
-    if row is None or row['user_id'] not in readable_training_owner_ids():
+    where, params = visible_trainings_sql()
+    row = get_db().execute(f'SELECT * FROM trainings WHERE id = ? AND {where}', [training_id] + params).fetchone()
+    if row is None:
         raise ApiError('Training nicht gefunden', 404)
     if write and row['user_id'] != uid():
         raise ApiError('Nur der Ersteller darf dieses Training bearbeiten', 403)

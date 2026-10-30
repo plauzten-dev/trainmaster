@@ -9,8 +9,8 @@ from config import (APP_NAME, CLOUDINARY_ENABLED, CORE_COMPETENCIES, DIFFICULTIE
                     SPORTS, TRAINING_BLOCKS, UPLOAD_DIR)
 from database import get_db
 from helpers import (ApiError, clean_str, clean_time, delete_image, err, get_training, int_or_none, json_body,
-                     login_required, readable_training_owner_ids, role_required, save_image, training_sports, uid,
-                     valid_date, visible_events_sql)
+                     login_required, role_required, save_image, training_sports, uid,
+                     valid_date, visible_events_sql, visible_trainings_sql)
 
 bp = Blueprint('content', __name__)
 
@@ -43,11 +43,10 @@ def _get_visible_exercise(exercise_id, allow_training=False):
     me = uid()
     rows = _select_exercises(f'e.id = ? AND {VISIBLE}', [exercise_id, me])
     if not rows and allow_training:
-        owners = readable_training_owner_ids()
-        ph = ','.join('?' * len(owners))
+        where, params = visible_trainings_sql('t')
         rows = _select_exercises(
             f'''e.id = ? AND EXISTS (SELECT 1 FROM training_exercises te JOIN trainings t ON t.id = te.training_id
-                WHERE te.exercise_id = e.id AND t.user_id IN ({ph}))''', [exercise_id] + owners)
+                WHERE te.exercise_id = e.id AND {where})''', [exercise_id] + params)
     if not rows:
         raise ApiError('Übung nicht gefunden', 404)
     return rows[0]
@@ -271,12 +270,10 @@ def _clean_duration(value):
 @bp.get('/api/trainings')
 @login_required
 def list_trainings():
-    owners = readable_training_owner_ids()
-    ph = ','.join('?' * len(owners))
+    where, params = visible_trainings_sql('t')
     sql = f'''SELECT t.*, (SELECT COUNT(*) FROM training_exercises te WHERE te.training_id = t.id) AS exercise_count,
               (SELECT COALESCE(SUM(te.duration), 0) FROM training_exercises te WHERE te.training_id = t.id) AS total_minutes
-              FROM trainings t WHERE t.user_id IN ({ph})'''
-    params = list(owners)
+              FROM trainings t WHERE {where}'''
     month = request.args.get('month')
     if month:
         sql += ' AND substr(t.date, 1, 7) = ?'; params.append(month)

@@ -325,12 +325,13 @@
 .tx-placeholder { opacity: .3; background: var(--accent-soft); }
 body.dragging-active { user-select: none; -webkit-user-select: none; cursor: grabbing; }
 .notes-area { min-height: 260px; font-size: 16px; }
-.team-head { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
-.team-head .li-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.att-team-head { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.att-team-head .li-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
 .team-ic { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: var(--accent-grad); color: #fff; flex-shrink: 0; }
 .att-bar { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; min-height: 34px; }
 .att-progress { flex: 1; height: 6px; border-radius: 3px; background: var(--fill); overflow: hidden; }
 .att-progress i { display: block; height: 100%; background: var(--success); border-radius: inherit; transition: width .3s; }
+.team-hint { display: flex; align-items: center; gap: 6px; margin: 10px 4px 0; }
 .pick-teams { border: 0; background: none; }
 .pick-teams .li-main { display: flex; flex-direction: column; }
 .pick-teams .accent-ic { color: var(--accent); }
