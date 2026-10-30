@@ -96,16 +96,14 @@ def trainer_ids(user=None):
 
 
 def visible_trainings_sql(alias='', user=None):
-    """WHERE-Teil + Parameter fuer sichtbare Trainings: eigene, und als Spieler die des Trainers –
-    ist ein Team zugeordnet, nur wenn der Spieler in diesem Team ist; ohne Team sehen es alle Spieler des Trainers."""
+    """WHERE-Teil + Parameter fuer sichtbare Trainings: eigene, und als Spieler die des Trainers,
+    aber nur mit zugeordnetem Team, in dem der Spieler ist. Ohne Team sieht ein Training nur der Ersteller."""
     user = user or g.user
     p = alias + '.' if alias else ''
-    tids = trainer_ids(user)
-    if not tids:
+    tids, teams = trainer_ids(user), player_team_ids(user)
+    if not tids or not teams:
         return f'{p}user_id = ?', [user['id']]
-    teams = player_team_ids(user)
-    team_sql = f'{p}team_id IS NULL' + (f' OR {p}team_id IN ({",".join("?" * len(teams))})' if teams else '')
-    return (f'({p}user_id = ? OR ({p}user_id IN ({",".join("?" * len(tids))}) AND ({team_sql})))',
+    return (f'({p}user_id = ? OR ({p}user_id IN ({",".join("?" * len(tids))}) AND {p}team_id IN ({",".join("?" * len(teams))})))',
             [user['id']] + tids + teams)
 
 

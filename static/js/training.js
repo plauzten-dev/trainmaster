@@ -327,7 +327,7 @@
     const el = $('#paneTeam');
     if (!isTeamTrainer()) { el.innerHTML = ''; return; }
     if (!t.team_id) {
-      el.innerHTML = '<div class="card">' + emptyState('users', 'Kein Team zugeordnet', 'Ohne Team sehen alle deine Spieler dieses Training. Mit Team nur dessen Spieler – und du kannst die Anwesenheit erfassen.',
+      el.innerHTML = '<div class="card">' + emptyState('users', 'Kein Team zugeordnet', 'Ohne Team siehst nur du dieses Training. Füge ein Team hinzu, damit dessen Spieler es sehen und du die Anwesenheit erfassen kannst.',
         '<button class="btn btn-primary" type="button" data-pick-team>' + icon('plus', 'sm') + 'Team hinzufügen</button>', true) + '</div>';
       $('[data-pick-team]', el).addEventListener('click', pickTeam);
       return;

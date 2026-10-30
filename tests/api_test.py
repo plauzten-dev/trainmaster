@@ -143,7 +143,7 @@ check(t.put('/api/trainings/%d/attendance/all' % tid, json={'team_id': team['id'
 check(t.put('/api/trainings/%d/attendance' % tid, json={'player_id': p2['id'], 'present': None}, headers=H).status_code == 200, 'null loescht Eintrag')
 
 # Dashboard Spieler
-ds = s.get('/api/dashboard').get_json(); check(ds['stats']['total_trainings'] == 3, 'Spieler-Dashboard zaehlt eigene+Trainer (%d)' % ds['stats']['total_trainings'])
+ds = s.get('/api/dashboard').get_json(); check(ds['stats']['total_trainings'] == 2, 'Spieler-Dashboard: eigenes + Team-Training, Kopie ohne Team unsichtbar (%d)' % ds['stats']['total_trainings'])
 check(s.get('/api/statistik').status_code == 200 and len(s.get('/api/statistik').get_json()['monthly']) == 6, 'Statistik 6 Monate')
 check(t.put('/api/auth/weekly-goal', json={'weekly_goal': 99}, headers=H).get_json()['weekly_goal'] == 14, 'Wochenziel geklemmt')
 
@@ -151,9 +151,11 @@ check(t.put('/api/auth/weekly-goal', json={'weekly_goal': 99}, headers=H).get_js
 team3 = t.post('/api/teams', json={'name': 'Damen', 'sport': 'Basketball'}, headers=H).get_json()
 check(t.put('/api/trainings/%d' % tid, json={'team_id': team3['id']}, headers=H).status_code == 200, 'Training fremdem Team zuordnen')
 check(s.get('/api/trainings/%d' % tid).status_code == 404 and not any(x['id'] == tid for x in s.get('/api/trainings').get_json()), 'Spieler ausserhalb des Teams sieht Training nicht')
-check(s.get('/api/dashboard').get_json()['stats']['total_trainings'] == 2 and s.get('/api/trainings/%d/my-attendance' % tid).status_code == 404, 'Dashboard/Zusage ohne fremdes Team-Training')
+check(s.get('/api/dashboard').get_json()['stats']['total_trainings'] == 1 and s.get('/api/trainings/%d/my-attendance' % tid).status_code == 404, 'Dashboard/Zusage ohne fremdes Team-Training')
 check(t.put('/api/trainings/%d' % tid, json={'team_id': team2['id']}, headers=H).status_code == 200 and s.get('/api/trainings/%d' % tid).status_code == 200, 'Spieler im Team sieht Training')
-check(t.put('/api/trainings/%d' % tid, json={'team_id': None}, headers=H).status_code == 200 and s.get('/api/trainings/%d' % tid).status_code == 200, 'Ohne Team sehen alle Spieler')
+check(t.put('/api/trainings/%d' % tid, json={'team_id': None}, headers=H).status_code == 200 and s.get('/api/trainings/%d' % tid).status_code == 404 and not any(x['id'] == tid for x in s.get('/api/trainings').get_json()), 'Ohne Team sieht es kein Spieler')
+check(t.get('/api/trainings/%d' % tid).status_code == 200, 'Trainer sieht eigenes Training ohne Team')
+t.put('/api/trainings/%d' % tid, json={'team_id': team['id']}, headers=H)
 
 # Regenerate + Remove/Delete
 rg = t.post('/api/players/%d/regenerate-invite' % p['id'], headers=H).get_json()

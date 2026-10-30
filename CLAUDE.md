@@ -59,7 +59,7 @@ UI-Texte, Antworten und Commit-Messages auf Deutsch, Code-Bezeichner Englisch.
   in `app.css` gelöst (WebKit-Bug 301108). App-Shell **nicht** per JS verlängern, keine `filter: blur()` auf großen Flächen (Performance).
 - Dashboard = Variante „Bibliothek“ (Heute-Karte, Diese Woche, Bibliothek-Liste, wischbare Reihen); Statistik im Dialog.
 - Training-Detail: Tabs Übungen/Team/Notizen – „Team“ nur für Trainer bei eigenen Trainings (`trainings.team_id`, keine Vorauswahl;
-  Sichtbarkeit `helpers.visible_trainings_sql`: mit Team nur dessen Spieler, ohne Team alle verknüpften Spieler),
+  Sichtbarkeit `helpers.visible_trainings_sql`: mit Team nur dessen Spieler, ohne Team nur der Trainer selbst),
   Spieler sehen stattdessen eine kompakte Zusage-Karte. Drucken: Desktop `window.print()`, iPhone/iPad teilt die echte PDF-Datei
   `/training/<id>/pdf/file` (`pdf_export.py`, reines Python, nur Text) – `window.print()` geht in der iOS-PWA nicht.
 

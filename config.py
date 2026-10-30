@@ -6,7 +6,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(BASE_DIR, 'data')
 
 APP_NAME = 'TrainMaster'
-APP_VERSION = '1.6.1'
+APP_VERSION = '1.6.2'
 
 DB_PATH = os.environ.get('DB_PATH', os.path.join(BASE_DIR, 'training.db'))
 UPLOAD_DIR = os.environ.get('UPLOAD_DIR', os.path.join(BASE_DIR, 'uploads'))
